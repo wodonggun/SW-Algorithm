@@ -29,6 +29,7 @@ int go(vector<string> &board, int x, int y)
     }
     return ans + 1;
 }
+
 int main()
 {
     int n, m;
