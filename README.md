@@ -20,13 +20,14 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 1. `src/main/java` 패키지 밑에 알고리즘 사이트별 패키지를 작성합니다.
     - ex) Baekjoon Online Judge : `src/main/java/baekjoon`
 2. 각 사이트별 패키지 밑에 `/{본인 이름}/{단계별 제목}/{p_문제번호}` 형식으로 문제별 패키지를 생성합니다.
-    - ex) `src/main/java/baekjoon/yj/p_2750`
+    - ex) `github.com/아이디/BOJ/Woo/`
     
 
 # Commit 메시지 규칙
 
 1. 커밋 메시지는 검색의 편의를 위해 알고리즘 사이트명과 문제 번호(ID)가 포함되도록 작성합니다.
-    - ex) `[baekjoon] 2750 `
+    - ex) `[baekjoon] 2750 사다리 타기`
+    - ex) `[baekjoon] 10998 AxB`
 
 
 # 참가자
