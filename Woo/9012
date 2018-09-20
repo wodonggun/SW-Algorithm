@@ -1,0 +1,60 @@
+//백준 9012
+
+int N;
+vector<char> v;
+int flag = 0;
+
+vector<char> stack;
+
+char arr[1001];
+int left = 0;
+int right = 0;
+
+int main()
+{
+	scanf("%d ", &N);
+	
+	for (int i = 0; i < N; i++)
+	{
+		flag = 0;
+		left = 0;
+		right = 0;
+		v.clear();
+		stack.clear();
+
+		while (1)
+		{
+			char a;
+			scanf("%c", &a);
+			if (a == '\n')
+				break;
+			v.push_back(a);
+		}
+		
+		
+		
+		for (int i = 0; i < v.size(); i++)
+		{
+			if (v.at(i) == '(') {
+				left++;
+				stack.push_back('(');
+			}
+			else if (v.at(i) == ')' && !stack.empty())
+			{
+				right++;
+				stack.pop_back();
+			}
+			else
+			{
+				flag = 1;
+				break;
+			}
+
+		}
+
+	printf("%s\n", (left==right && (flag == 0))?"YES":"NO");
+		
+	}
+	
+	return 0;
+}
