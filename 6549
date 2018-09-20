@@ -1,0 +1,71 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <vector>
+#include <algorithm>
+
+//#define max(a,b) (a>b)? a:b
+typedef long long llong;
+
+using namespace std;
+
+llong n, answer;
+
+llong arr[100001];
+
+
+
+vector<llong> v;
+
+int main()
+{
+	while (1) {
+		answer = 0;
+		v.clear();
+
+		scanf("%d", &n);
+		if (n == 0)
+			break;
+
+		int count = 0;
+		for (int i = 0; i < n; i++)
+			scanf("%lld", &arr[i]);
+	
+
+		arr[n] = 0;
+
+
+		for (int i = 0; i < n + 1; i++)
+		{
+			while (!v.empty() && arr[v.back()] > arr[i])
+			{
+				llong j = v.back();
+				v.pop_back();
+
+				llong width;
+
+
+				//
+				if (v.empty()) {
+					width = i;
+				}
+				else
+				{
+					width = i - v.back() - 1;
+				}
+				answer = max((llong)answer, (llong)arr[j] * width);
+
+			}
+			v.push_back(i);
+
+		}
+		printf("%lld\n", answer);
+	}
+
+	return 0;
+}
+
+
+
+
+
+
