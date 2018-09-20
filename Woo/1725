@@ -1,0 +1,47 @@
+//1725번
+
+int N;
+int arr[100001];
+int answer;
+
+vector<int> v;
+
+int main()
+{
+	scanf("%d", &N);
+
+	for (int i = 0; i < N; i++)
+	{
+		scanf("%d", &arr[i]);
+	}
+	
+	for (int i = 0; i < N+1; i++)
+	{
+		
+		while (!v.empty() && arr[i] < arr[v.back()])
+		{
+			int width;
+			int temp = v.back();
+			v.pop_back();
+
+			
+			if (v.size() == 0)
+				width = i;
+			else
+			{
+				width = i - v.back() - 1;
+			}
+			
+			answer = max(answer, width*arr[temp]);
+		
+
+
+		}
+		v.push_back(i);
+		
+
+	}
+	printf("%d", answer);
+
+	return 0;
+}
