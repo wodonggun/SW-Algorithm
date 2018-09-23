@@ -49,3 +49,14 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 
 숫자 따로 받기: int N = 12345;
 - scanf("%1d", &N);
+
+
+서로다른 4개의 선택(조합) != 재귀함수를 통한 조합 선택법(dfs)
+	for (int i = 0; i < n; i++)
+		for (int j = i + 1; j < n; j++)
+			for (int l = j + 1; l < n; l++)
+				for (int k = l + 1; k < n; k++)
+					printf("%d %d %d %d\n", i, j, l, k);
+
+
+	
