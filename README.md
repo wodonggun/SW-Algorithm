@@ -1,6 +1,6 @@
 # 백준 알고리즘 스터디 BOJ 
 [![Build Status](https://travis-ci.org/y3s-study/algorithm-java.svg?branch=master)](https://travis-ci.org/y3s-study/algorithm-java)
-[![Coverage Status](https://coveralls.io/repos/github/y3s-study/algorithm-java/badge.svg?branch=master)](https://coveralls.io/github/y3s-study/algorithm-java?branch=master)
+
 
 C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니다. 
 
@@ -39,10 +39,11 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 
 
 
-## 주의 사항
-- fgets(s,100,stdin);   줄바꿈까지 인식
-- scanf("%[\n]\n",s);   띄어쓰기나 줄바꿈 단위로 인식
-- getline(cin, s);      줄바꿈은 인식안하고 이전까지 인식
+## 기출 모음집
+
+https://www.acmicpc.net/workbook/view/2063
+
+
 
 
 ## 팁
@@ -62,4 +63,8 @@ scanf("%1d", &N);
 					printf("%d %d %d %d\n", i, j, l, k);
 ```
 
-	
+```	
+- fgets(s,100,stdin);   줄바꿈까지 인식
+- scanf("%[\n]\n",s);   띄어쓰기나 줄바꿈 단위로 인식
+- getline(cin, s);      줄바꿈은 인식안하고 이전까지 인식
+```
