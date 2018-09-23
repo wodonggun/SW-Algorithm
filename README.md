@@ -48,13 +48,26 @@ https://www.acmicpc.net/workbook/view/2063
 
 ## 팁
 
-숫자 따로 받기:
+### 숫자 따로 받기
 ```
-int N = 12345;
-scanf("%1d", &N);
+int main()
+{
+	int a[9];
+
+	for (int i = 0; i < 9; i++)
+	{
+		scanf("%1d", &a[i]);
+	}
+	for (int i = 0; i < 9; i++)
+	{
+		printf("%d", a[i]);
+	}
+
+
+}
 ```
 
-서로다른 4개의 선택(조합) != 재귀함수를 통한 조합 선택법(dfs)
+### 서로다른 4개의 선택(조합) != 재귀함수를 통한 조합 선택법(dfs)
 ```
 	for (int i = 0; i < n; i++)
 		for (int j = i + 1; j < n; j++)
