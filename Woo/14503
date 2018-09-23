@@ -1,0 +1,115 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+//1:30
+using namespace std;
+
+// N 세로 ,M 가로    (r,c) r=y   c=x          d= 0북쪽  1동쪽  2남쪽  3서쪽 
+
+
+//  현재위치청소 -> 왼쪽방향탐색 -> 갈곳없으면 다시 회전하고 왼쪽탐색
+//                               ->  갈곳이 있으면 회전한다음 한칸전진 
+// 4방향 모두 벽이거나 청소가되어있으면 바라보는방향을 유지하고 후진
+// 뒤쪽이 벽이라 후진도 할수없으면 멈춤.
+
+
+
+typedef struct robot
+{
+	int cur_r, cur_c;
+	int count = 0;
+	int cleaning = 0;
+	int dir;
+}robot;
+
+robot rb;
+int N, M, r, c, d;
+int arr[51][51];
+int answer;
+int dsnb[4][2] = { {0,-1} ,{1,0} ,{0,1}, {-1,0} };
+
+
+//boundary check
+int boundary(int x,int y)
+{
+	
+	return (x >= 0 && y >= 0 && x < M && y < N);
+}
+
+int sol()
+{
+	//청소
+	if(arr[rb.cur_r][rb.cur_c]==0)
+	rb.count++,arr[rb.cur_r][rb.cur_c] = 2;
+	
+	//왼쪽 탐색
+	int temp_dir = rb.dir;
+	int temp_x, temp_y;
+
+	for (int i = 0; i < 4; i++)  //4방향 반복
+	{
+	
+		temp_dir = (temp_dir + 3) % 4;
+		temp_y = rb.cur_r + dsnb[temp_dir][1];
+		temp_x = rb.cur_c + dsnb[temp_dir][0];
+	
+
+		if (  boundary(temp_x,temp_y)  &&  arr[temp_y][temp_x] == 0)
+		{
+			rb.cur_c = temp_x;
+			rb.cur_r = temp_y;
+			rb.dir = temp_dir;
+			sol();
+			return 0;
+		}
+
+	}
+	//갈곳없으면 후진
+	temp_dir = (rb.dir + 2) % 4;
+	temp_y = rb.cur_r + dsnb[temp_dir][1];
+	temp_x = rb.cur_c + dsnb[temp_dir][0];
+	if (arr[temp_y][temp_x] == 1)
+		return 0;
+	else
+	{
+		rb.cur_c = temp_x;
+		rb.cur_r = temp_y;
+		sol();
+	}
+
+	
+
+
+}
+
+
+int main()
+{
+	scanf("%d %d", &N, &M);
+	scanf("%d %d %d",&r,&c,&d);
+	rb.cur_c = c;
+	rb.cur_r = r;
+	rb.dir = d;
+
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+			scanf("%d", &arr[i][j]);
+
+	
+
+	sol();//dfs start
+
+
+	//find answer 
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+			if (arr[i][j] == 2)
+				answer++;
+
+	printf("%d", answer);
+
+}
