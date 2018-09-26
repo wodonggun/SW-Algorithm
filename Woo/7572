@@ -1,0 +1,29 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stack>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+int N,K;
+
+int sip[10] = { 0,1,2,3,4,5,6,7,8,9 };
+char sip2[12] = { 'A','B','C','D','E','F','G','H','I','J','K','L' };
+
+int sip_cur = 9;
+int sip2_cur = 5;
+
+int main()
+{
+	scanf("%d", &N);
+	
+	int k = N-4;
+
+	
+	sip_cur = (sip_cur + k)%10;
+	sip2_cur = (sip2_cur + k)%12;
+	
+	printf("%c%d", sip2[sip2_cur], sip[sip_cur]);
+
+}
