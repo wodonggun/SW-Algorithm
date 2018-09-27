@@ -1,0 +1,100 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+typedef long long llong;
+
+using namespace std;
+
+int N, K, M;
+
+int visit[100001];
+int dist[100001];
+
+int answer = 2140654321;
+int MAX = 100001;
+
+
+vector<vector<int>>station, h_tube;
+
+vector<int> s_visit, t_visit;
+
+int sol(int cur)
+{
+	queue<int> q;
+	q.push(cur);
+	s_visit[cur] = 1;
+
+	while (!q.empty())
+	{
+		cur = q.front();
+		q.pop();
+
+		if (cur == N)
+		{
+			answer = s_visit[cur];
+			return 0;
+		}
+
+		for (int i = 0; i < station[cur].size(); i++)
+		{
+			int tube = station[cur][i];
+			if (!t_visit[tube])
+			{
+				t_visit[tube] = 1;
+
+				for (int j = 0; j<h_tube[tube].size(); j++)
+				{
+					int next = h_tube[tube][j];
+					if (!s_visit[next]) {
+						s_visit[next] = s_visit[cur] + 1;
+						q.push(next);
+					}
+
+				}
+
+			}
+
+		}
+
+
+	}
+
+
+
+	answer = -1;
+	return 0;
+}
+
+int main()
+{
+	scanf("%d %d %d", &N, &K, &M);// N 역의수,  K 서로연결역의개수, 하이버튜브개수 M 
+
+	station = vector<vector<int>>(N + 1);
+	h_tube = vector<vector<int>>(M + 1);
+
+	s_visit = vector<int>(N + 1, 0);
+	t_visit = vector<int>(M + 1, 0);
+
+
+	for (int i =1; i <M; i++)// i는 하이퍼튜브 번호 
+	{
+		for (int j = 0; j < K; j++)
+		{
+			int yeok;
+			scanf("%d", &yeok);
+			station[yeok].push_back(i); // station 1번역은 1번 튜브로 갈수 있다.  2번역은 1번튜브로 갈수있다,  3번역은 1번 튜브로 갈 수 있다. 
+			h_tube[i].push_back(yeok);	// 1번튜브는 1번역으로 갈 수 있다.  1번튜브는 2번역으로 갈 수 있다, 1번튜브는 3번역으로 갈 수있다. 
+		}
+
+	}
+
+
+
+	sol(1);
+	printf("%d\n", answer);
+
+}
