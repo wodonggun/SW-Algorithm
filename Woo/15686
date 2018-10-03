@@ -1,0 +1,139 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#include <stdio.h>
+#include <vector>
+#include <deque>
+#include <math.h>
+
+
+
+typedef struct m_pair {
+	int x, y, start_x, start_y;
+}m_pair;
+
+const int dx[4] = {0,1,0,-1 };
+const int dy[4] = {-1,0,1,0 };
+
+using namespace std;
+
+int N, M, answer = 987654321;
+int arr[51][51];
+
+int arr_visit[51][51];
+
+vector<pair<int, int>> vec_chicken;
+vector<pair<int, int>> vec_house;
+
+deque<pair<int, int>> que_select;
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+
+int sol(int cur, int select)
+{
+	
+	if (select < M)//dfs 치킨집 셀렉
+	{
+		for (int i = cur; i < vec_chicken.size(); i++)
+		{
+			que_select.push_back(make_pair(vec_chicken[i].first, vec_chicken[i].second));
+			sol(i+1, select + 1);
+			que_select.pop_back();
+
+		}
+
+	}
+	else //셀렉끝나면
+	{
+		int temp_answer = 0; 
+		deque<m_pair> que_select_temp;
+
+		
+		// que_select를 복사
+		for (int i = 0; i < que_select.size(); i++)
+			que_select_temp.push_back({ que_select[i].first, que_select[i].second, que_select[i].first, que_select[i].second });
+
+
+		//visit 초기화
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+			{
+				arr_visit[i][j] = 0;
+			}
+
+
+		//선택개수 체크
+		int count = 0;
+
+		//bfs start
+		while (!que_select_temp.empty())
+		{
+
+			int x = que_select_temp.front().x;
+			int y = que_select_temp.front().y;
+			int start_x = que_select_temp.front().start_x;
+			int start_y = que_select_temp.front().start_y;
+			que_select_temp.pop_front();
+
+			for (int i = 0; i < 4; i++)
+			{
+					if (boundary(x + dx[i], y + dy[i]) && arr[y + dy[i]][x + dx[i]]==0  && arr_visit[y + dy[i]][x + dx[i]] == 0 )
+					{
+							arr_visit[y + dy[i]][x + dx[i]] = 1;
+							que_select_temp.push_back({x + dx[i], y + dy[i],start_x,start_y});
+					}
+					else if(boundary(x + dx[i], y + dy[i]) && arr[y + dy[i]][x + dx[i]] == 1  && arr_visit[y + dy[i]][x + dx[i]] == 0)
+					{
+							arr_visit[y + dy[i]][x + dx[i]] = 1;
+							que_select_temp.push_back({ x + dx[i], y + dy[i],start_x,start_y });
+							int distance = abs(start_x-(x+dx[i])) + abs(start_y-(y+dy[i]));
+							temp_answer += distance;
+							count++;
+						
+					}
+					else if (boundary(x + dx[i], y + dy[i]) && arr_visit[y + dy[i]][x + dx[i]] == 0)
+					{
+						arr_visit[y + dy[i]][x + dx[i]] = 1;
+						que_select_temp.push_back({ x + dx[i], y + dy[i],start_x,start_y });
+					}
+					
+			}
+
+			//개수 다 구했으면 걍 종료
+			if (count == vec_house.size())
+				break;
+		}
+		if (temp_answer < answer)
+			answer = temp_answer;
+			
+	}
+	
+	return 0;
+}
+
+int main()
+{
+	scanf("%d %d", &N, &M);
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++) {
+			scanf("%d", &arr[i][j]);
+			if (arr[i][j] == 1)
+				vec_house.push_back(make_pair(j, i));
+			else if (arr[i][j] == 2)
+				vec_chicken.push_back(make_pair(j, i));
+			else
+				continue;
+		}
+
+
+
+	sol(0, 0);
+
+
+	printf("%d", answer);
+	return 0;
+}
