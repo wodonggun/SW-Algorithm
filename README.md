@@ -96,7 +96,26 @@ int main()
 					printf("%d %d %d %d\n", i, j, l, k);
 ```
 
-```	
+```
+int sol(int cur, int select) 		// 전체 N개 중에서 M개 선택(cur=현재 선택한 번호, select = 지금까지 선택갯수)
+{
+	if (select < M) 
+	{
+		for (int i = cur; i < N; i++)
+		{
+			que_select.push_back(i);
+			sol(i+1, select + 1);
+			que_select.pop_back();
+		}
+	}
+	else if(select==M)		//모든 선택을 끝냈을때
+	{
+	
+	}
+ }
+```
+
+	
 - fgets(s,100,stdin);   줄바꿈까지 인식
 - scanf("%[\n]\n",s);   띄어쓰기나 줄바꿈 단위로 인식
 - getline(cin, s);      줄바꿈은 인식안하고 이전까지 인식
