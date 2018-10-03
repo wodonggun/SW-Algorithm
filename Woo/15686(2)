@@ -1,0 +1,92 @@
+#define MAX 2147000000
+#include <stdio.h>
+#include <queue>
+#include <math.h>
+using namespace std;
+typedef struct str {
+	int x, y;
+	int visit;
+}str;
+
+vector<str> person;
+vector<str> chicken;
+
+int answer= MAX;
+int N, M;
+int arr[51][51];
+
+//distnace calculate
+void cal()
+{
+	int total = 0;
+	for (int i = 0; i < person.size(); i++)							
+	{
+		str p = person[i];
+		int len = MAX;
+		for (int j = 0; j < chicken.size(); j++)					
+		{
+			str c = chicken[j];
+			if (c.visit == 1)										
+			{
+				int temp = abs(p.x - c.x) + abs(p.y - c.y);			
+				if (temp < len)										
+				{
+					len = temp;
+				}
+
+			}
+
+		}
+		total += len;												
+
+	}
+	if (total < answer)												
+		answer = total;
+
+}
+
+int sol(int next_combination_start, int M_count)
+{
+	if (M_count == M)				
+	{															
+		cal();												
+		return 0;												
+	}
+
+	for (int i = next_combination_start; i < chicken.size(); i++)
+	{
+		if (chicken[i].visit== 0)								
+		{
+			chicken[i].visit = 1;								
+			sol(i + 1, M_count + 1);						
+			chicken[i].visit = 0;								
+		}
+	}
+
+	return 0;
+}
+
+int main()
+{
+	scanf("%d %d", &N, &M);
+	for (int i = 1; i <= N; i++)
+		for (int j = 1; j <= N; j++)
+		{
+			scanf("%d", &arr[i][j]);
+			if (arr[i][j] == 1)
+			{
+				person.push_back({ j,i,0 });					
+			}
+			else if (arr[i][j] == 2)
+			{
+				chicken.push_back({ j,i,0 });					
+			}
+		}
+
+	sol(0, 0);
+
+	printf("%d", answer);
+
+	return 0;
+
+}
