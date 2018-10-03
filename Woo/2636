@@ -1,0 +1,129 @@
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <queue>
+#include <set>
+
+using namespace std;
+const int dx[4] = { 0,1,0,-1 };
+const int dy[4] = { -1,0,1,0 };
+
+int arr[101][101];
+int visit[101][101];
+int N, M;
+
+int time_count = 0;
+int before = 0;
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < M && y < N);
+}
+
+int check()
+{
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+			if (arr[i][j] == 1)
+				return 1;
+	
+	return 0;
+
+}
+
+
+int sol(int a, int b)
+{
+	
+	while (check()) {
+		int temp=0;
+		//치즈갯수, 시간 카운트
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
+				if (arr[i][j] == 1)
+					temp++;
+		before = temp;
+		time_count++;
+
+
+
+
+
+		queue<pair<int, int>> que;
+
+		//공기에서 bfs
+		que.push(make_pair(0, 0));
+		visit[0][0] = 1;
+		queue<pair<int, int>> cheese_boundary;
+
+		while (!que.empty())
+		{
+			int x = que.front().first;
+			int y = que.front().second;
+
+			que.pop();
+
+			//4방향 탐색
+			for (int i = 0; i < 4; i++)
+			{
+				if (boundary(x + dx[i], y + dy[i]) && visit[y + dy[i]][x + dx[i]] == 0 && arr[y + dy[i]][x + dx[i]] == 0)
+				{
+					visit[y + dy[i]][x + dx[i]] = 1;
+					que.push(make_pair(x + dx[i],y + dy[i]));
+				}
+				else if (boundary(x + dx[i], y + dy[i]) && arr[y + dy[i]][x + dx[i]] == 1)
+				{
+					arr[y + dy[i]][x + dx[i]] = -1;
+					cheese_boundary.push(make_pair(x + dx[i], y + dy[i]));
+				}
+			}
+
+		}
+
+		//치즈경계 0으로 변경
+		while (!cheese_boundary.empty())
+		{
+			int x = cheese_boundary.front().first;
+			int y = cheese_boundary.front().second;
+			cheese_boundary.pop();
+
+			arr[y][x] = 0;
+		}
+
+
+		//방문 초기화
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
+				visit[i][j] = 0;
+
+	}
+
+	return 0;
+}
+
+int main()
+{
+	//bfs -> 공기주변 -1 -> 0으로 변환 -> check(치즈여부) -> 치즈있으면 go
+	//													  -> 치즈없으면 break;																		
+
+
+
+	scanf("%d %d", &N, &M); //N 세로, M 가로 
+	
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+			scanf("%d", &arr[i][j]);
+
+	//공기 bfs
+	sol(0,0);
+
+
+	//정답
+	printf("%d\n%d", time_count, before);
+	
+
+}
