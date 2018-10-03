@@ -1,0 +1,71 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <set>
+
+using namespace std;
+
+#define abs(x,y) ((x)>(y)?(x-y):(y-x))
+
+
+
+int main()
+{
+	int T;
+	scanf("%d", &T);
+
+	for (int testcase = 0; testcase < T; testcase++)
+	{
+		deque<char> deq;
+		set<int> answer;
+
+		int N, K;
+		scanf("%d %d", &N, &K);
+		for (int i = 0; i < N; i++)
+		{
+			int temp;
+			scanf(" %1c", &temp);
+
+			deq.push_back(temp);
+		}
+		
+		for (int i = 0; i < N/4; i++)
+		{
+			//값 구하기 N/4개의 비트값
+			for (int j = 0; j < 4; j++)
+			{
+				char str[9] = { NULL, };
+				//4방향 각각 비트값 구하기							
+				for (int k = 0; k < N / 4; k++)
+				{
+					
+					str[k] = deq.at(j*(N/4)+k);
+				}
+				int number = (int)strtol(str, NULL, 16);
+				answer.insert(number);
+			}
+								   
+
+			//뒤 팝 -> 앞에 인서트 반복
+			char temp = deq.back();
+			deq.pop_back();
+			deq.push_front(temp);
+		}
+
+		int q = answer.size();
+		for (int i = 0; i < q- K; i++)
+			answer.erase(answer.begin());
+
+
+		//정답
+
+		int t = *answer.begin();
+		printf("#%d %d\n",testcase+1,t);
+
+	}
+
+
+}
