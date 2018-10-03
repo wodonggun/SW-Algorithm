@@ -1,10 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-
 #include <stdio.h>
 #include <vector>
 #include <deque>
-#include <math.h>
+
+#define abs(x, y) ((x)>(y)?(x)-(y):(y)-(x))
 
 
 
@@ -90,7 +90,7 @@ int sol(int cur, int select)
 					{
 							arr_visit[y + dy[i]][x + dx[i]] = 1;
 							que_select_temp.push_back({ x + dx[i], y + dy[i],start_x,start_y });
-							int distance = abs(start_x-(x+dx[i])) + abs(start_y-(y+dy[i]));
+							int distance = abs(start_x,x+dx[i]) + abs(start_y,y+dy[i]);
 							temp_answer += distance;
 							count++;
 						
@@ -129,10 +129,7 @@ int main()
 				continue;
 		}
 
-
-
 	sol(0, 0);
-
 
 	printf("%d", answer);
 	return 0;
