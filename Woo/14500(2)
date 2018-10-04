@@ -1,0 +1,100 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+
+#include <stdio.h>
+#include <vector>
+#include <deque>
+#include <algorithm>
+#include <queue>
+#include <set>
+
+
+int arr[501][501];
+int visit[501][501];
+int N, M;
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+int answer = 0;
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < M && y < N);
+}
+
+int sol(int x, int y, int count, int result)
+{
+	int temp = result;
+	if (count == 4)
+	{
+		//종료 결과 비교
+		if (result > answer)
+			answer = result;
+		return 0;
+	}
+
+
+	//ㅗ ㅓ ㅏ ㅜ 4개 예외처리
+	if (count == 2)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (boundary(x + dx[j], y + dy[j]) && arr[y + dy[j]][x + dx[j]] >= 0 && visit[y + dy[j]][x + dx[j]] == 0)
+			{
+				int temp2 = temp + arr[y + dy[j]][x + dx[j]];
+				visit[y + dy[j]][x + dx[j]] = 1;
+				for (int i = 0; i < 4; i++)
+				{
+					if (boundary(x + dx[i], y + dy[i]) && arr[y + dy[i]][x + dx[i]] >= 0 && visit[y + dy[i]][x + dx[i]] == 0)
+					{
+						int temp3 = temp2 + arr[y + dy[i]][x + dx[i]];
+						if (answer < temp3)
+							answer = temp3;
+					}
+				}
+				visit[y + dy[j]][x + dx[j]] = 0;
+			}
+		}
+
+	}
+
+
+	//4방향 dfs
+	for (int i = 0; i < 4; i++)
+	{
+		if (boundary(x + dx[i], y + dy[i]) && arr[y + dy[i]][x + dx[i]] >= 0 && visit[y + dy[i]][x + dx[i]] == 0)
+		{
+			visit[y + dy[i]][x + dx[i]] = 1;
+			sol(x + dx[i], y + dy[i], count + 1, result + arr[y+dy[i]][x+dx[i]]);
+			visit[y + dy[i]][x + dx[i]] = 0;
+		}
+		
+	}
+	
+
+	return 0;
+}
+
+int main()
+{
+
+	//500 x 500 x 24 = 500만 
+
+	scanf("%d %d", &N, &M);
+
+	for(int i=0;i<N;i++)
+		for (int j = 0; j < M; j++)
+		{
+			scanf("%d", &arr[i][j]);
+		}
+
+	for (int i = 0; i<N; i++)
+		for (int j = 0; j < M; j++) {
+			visit[i][j] = 1;
+			sol(j, i, 1, arr[i][j]); //블럭 4개까지 dfs
+			visit[i][j] = 0;
+		}
+
+	printf("%d", answer);
+
+}
