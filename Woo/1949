@@ -1,0 +1,107 @@
+#define _CRT_SECURE_NO_WARNINGS 
+
+#include <stdio.h>
+#include <set>
+#include <algorithm>
+#include <string.h>
+
+#define abs(a,b) (((a)>(b))?(a)-(b):(b)-(a))
+
+using namespace std;
+
+int arr[9][9];
+int visit[9][9];
+int K, N, T;
+
+int max_num;
+int answer;
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+int sol(int x,int y, int count, int K_count)
+{
+
+	//종료조건
+
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (boundary(x + dx[i], y + dy[i]) && arr[y + dy[i]][x + dx[i]] < arr[y][x] && visit[y + dy[i]][x + dx[i]] == 0)
+		{
+			visit[y + dy[i]][x + dx[i]] = 1;
+			sol(x + dx[i], y + dy[i], count + 1, K_count);
+			visit[y + dy[i]][x + dx[i]] = 0;
+
+		}
+
+		for (int k = 1; k <= K_count; k++) {
+			if (boundary(x + dx[i], y + dy[i]) && arr[y + dy[i]][x + dx[i]] - k < arr[y][x] && visit[y + dy[i]][x + dx[i]] == 0 && K_count > 0)
+			{
+				visit[y + dy[i]][x + dx[i]] = 1;
+				arr[y + dy[i]][x + dx[i]] = arr[y + dy[i]][x + dx[i]] - k;
+				sol(x + dx[i], y + dy[i], count + 1, K_count - K_count);
+				arr[y + dy[i]][x + dx[i]] = arr[y + dy[i]][x + dx[i]] + k;
+				visit[y + dy[i]][x + dx[i]] = 0;
+			}
+		}
+
+	}
+
+	if (count > answer)
+	{
+		answer = count;
+	}
+
+	return 0;
+}
+
+
+int main()
+{
+	scanf("%d", &T);
+
+	for (int testcase = 0; testcase < T; testcase++)
+	{
+		scanf("%d %d", &N, &K);
+
+
+		//max_num ,answer,visit 초기화
+		answer = 0;
+		max_num = 0;
+		
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++) {
+				scanf("%d", &arr[i][j]);
+				if (arr[i][j] > max_num)
+					max_num = arr[i][j];
+			}
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+			{
+				if (arr[i][j] == max_num)
+				{
+					visit[i][j] = 1;
+					sol(j, i, 1,K);
+					visit[i][j] = 0;
+				}
+
+
+			}
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				visit[i][j] = 0;
+
+		printf("#%d %d\n", testcase+1,answer);
+	}
+	
+
+}
