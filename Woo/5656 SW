@@ -1,0 +1,187 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <set>
+#include <algorithm>
+#include <string.h>
+#include <deque>
+#include <set>
+
+
+typedef struct str
+{
+	int x,y,width;
+}str;
+
+using namespace std;
+int arr[16][13];
+int arr_temp[16][13];
+
+int T, N, W, H;
+int answer_count;
+int answer = 987654321;
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+int arr_depth[4][16][13];
+
+
+int memo[16][16][16][16];
+
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < W && y < H);
+}
+
+int bfs(int x, int y, int c)
+{
+	deque<str> qq;
+	qq.push_back({ x, y ,c});
+	arr_temp[y][x] = 0;
+
+	
+	while (!qq.empty())
+	{
+		int tx = qq.front().x;
+		int ty = qq.front().y;
+		int width = qq.front().width;
+		
+	
+
+		qq.pop_front();
+
+		for (int j = 0; j < 4; j++)
+		{
+			if (width > 1)
+				for (int i = 1; i < width; i++)
+				{
+					//1보다 크면 푸쉬
+					if (boundary(tx + dx[j] * i, ty + dy[j] * i) && arr_temp[ty + dy[j] * i][tx + dx[j] * i] > 1 ) {
+			
+						qq.push_back({ tx + dx[j] * i, ty + dy[j] * i ,arr_temp[ty + dy[j] * i][tx + dx[j] * i] });
+						arr_temp[ty + dy[j] * i][tx + dx[j] * i] = 0;
+					
+					}
+					else if (boundary(tx + dx[j] * i, ty + dy[j] * i) && arr_temp[ty + dy[j] * i][tx + dx[j] * i] == 1) {
+				
+						arr_temp[y][x] = 0;
+						arr_temp[ty + dy[j] * i][tx + dx[j] * i] = 0;
+					}
+				
+
+				}
+		}
+
+
+	}
+
+
+	//배열 땡기기 
+	for (int i = 0; i < W; i++) {
+		int badak = H-1;
+		for (int j = H - 1; j >= 0; j--)
+		{
+			if (boundary(i, j) && arr_temp[j][i] >= 1) 
+			{
+				arr_temp[badak--][i] = arr_temp[j][i];
+				if(j!=badak+1)
+				arr_temp[j][i] = 0;
+			}
+		}
+	}
+
+	return 0;
+}
+
+int sol(int a, int depth, int count)
+{
+
+	if (depth == N)
+	{
+		int count = 0;
+
+		for (int i = 0; i < H; i++)
+			for (int j = 0; j < W; j++)
+				if (arr_depth[depth - 1][i][j] > 0)
+					count++;
+		
+		if (answer > count)
+			answer = count;
+	}
+
+	else {
+
+		for (int i = 0; i < W; i++)
+		{
+		
+
+			
+			if (depth > 0)
+				for (int i = 0; i < H; i++)
+					for (int j = 0; j < W; j++)
+						arr_temp[i][j] = arr_depth[depth - 1][i][j];
+			else
+				for (int i = 0; i < H; i++)
+					for (int j = 0; j < W; j++)
+						arr_temp[i][j] = arr[i][j];
+
+			//벽돌 찾고
+			for (int j = 0; j < H; j++)
+			{
+				if (arr_temp[j][i]>0)
+				{
+					bfs(i, j, arr_temp[j][i]);
+					break;
+				}
+
+			}
+
+			
+
+			//현재 depth에 깨진후 블록 복사
+			for(int ii=0;ii<H;ii++)
+				for (int jj = 0; jj < W; jj++)
+				{
+					arr_depth[depth][ii][jj] = arr_temp[ii][jj];
+				}
+
+			sol(a, depth + 1, 0);
+			
+		}
+
+
+
+	}
+	//위치 선택
+
+	return 0;
+
+}
+
+int main()
+{
+
+	scanf("%d", &T);
+
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		int block_count = 0;
+		answer = 987654321;
+
+		scanf("%d %d %d", &N, &W, &H);
+
+		for (int i = 0; i < H; i++)
+			for (int j = 0; j < W; j++) {
+				scanf("%d", &arr[i][j]);
+				if (arr[i][j] > 0)
+					block_count++;
+
+			}
+
+		sol(0, 0, 0);
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+}
