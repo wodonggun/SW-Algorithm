@@ -1,0 +1,143 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+
+typedef struct str{
+	int x, y, count,dir;
+}str;
+
+
+int T, N, M, K, answer;
+int dx[4] = { 0,0,-1,1 };
+int dy[4] = { -1,1,0,0 };
+
+vector<str> arr[101][101];
+queue<str> que;
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+
+int main()
+{
+
+	scanf("%d", &T);
+	
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		scanf("%d %d %d", &N, &M, &K);
+
+		
+		answer = 0;
+
+		for (int i = 0; i < K; i++)
+		{
+			int x, y, count, dir;
+			scanf("%d %d %d %d", &y, &x, &count, &dir);
+			que.push({ x,y,count,((dir+3)%4)});
+	
+		}
+		// x,  y,  count,  dir,  lifetime,  pre_miseng_max;
+
+		for (int i = 0; i < M; i++)
+		{
+			
+			while (!que.empty())
+			{
+				int tmp_dir=0;
+				str tmp = que.front();
+				
+				if (tmp.dir < 0)
+					printf("error\n\n");
+				
+				que.pop();
+
+				if (boundary(tmp.x + dx[tmp.dir],  tmp.y + dy[tmp.dir]) && tmp.y + dy[tmp.dir] == 0 || tmp.y + dy[tmp.dir] == N - 1 || tmp.x + dx[tmp.dir] == 0 || tmp.x + dx[tmp.dir] == N - 1)
+				{
+					if (tmp.count>1) {
+						
+						switch(tmp.dir)
+						{
+						case 0: tmp_dir = 1; break;
+						case 1: tmp_dir = 0; break;
+						case 2: tmp_dir = 3; break;
+						case 3: tmp_dir = 2; break;
+						}
+
+						arr[tmp.y + dy[tmp.dir]][tmp.x + dx[tmp.dir]].push_back({ tmp.x + dx[tmp.dir] ,tmp.y + dy[tmp.dir] ,
+							tmp.count / 2,tmp_dir });
+
+					}
+				}
+				else {
+					if (boundary(tmp.x + dx[tmp.dir], tmp.y + dy[tmp.dir])){
+						arr[tmp.y + dy[tmp.dir]][tmp.x + dx[tmp.dir]].push_back(tmp);
+					}
+				}
+
+				
+			}
+
+			// x,  y,  count,  dir,  lifetime,  pre_miseng_max;
+
+			//끝날때 
+			for(int k=0;k<N;k++)
+				for (int k2 = 0; k2 < N; k2++)
+				{
+					//빈곳이면 걍 넘어감
+					if (arr[k][k2].empty())
+						continue;
+
+					//다 팝하면서 큐에 넣기 
+					int x = 0;
+					int y = 0;
+					int count = 0;
+					int dir = 0;
+					int pre = 0;
+				
+					while (!arr[k][k2].empty())
+					{
+						str tmp2 = arr[k][k2].back();
+						arr[k][k2].pop_back();
+
+						count += tmp2.count;
+						x = k2;
+						y = k;
+
+						if (tmp2.dir < 0)
+							printf("error\n\n");
+						if (pre < tmp2.count) {
+							pre = tmp2.count;
+							dir = tmp2.dir;
+						}
+
+						if (tmp2.dir < 0)
+							printf("error\n\n");
+					}
+					que.push({ x,y,count,dir});
+				}
+
+		}
+		
+		while (!que.empty())
+		{
+			str tmp = que.front();
+			que.pop();
+			answer += tmp.count;
+
+			if (tmp.dir < 0)
+				printf("error\n\n");
+		}
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+	return 0;
+}
