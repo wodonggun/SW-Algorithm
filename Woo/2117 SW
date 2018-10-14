@@ -1,0 +1,113 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <queue>
+
+// 0812 시작 
+using namespace std;
+
+typedef struct str {
+	int x, y, depth;
+}str;
+
+int arr[21][21];
+
+int visit[21][21];
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+int diagonal_dx[4] = { 1,1,-1,-1 };
+int diagonal_dy[4] = { -1,1,1,-1 };
+
+int T, N, M,answer;
+queue<str> que;
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+int sol(int x, int y)
+{
+	int house = 0;
+	int pre = 0;
+
+	
+
+	visit[y][x] = 1;
+
+	que.push({ x,y,1 });
+	
+	while (!que.empty())
+	{
+		int temp = 0;
+		int t_x = que.front().x;
+		int t_y = que.front().y;
+		int t_depth = que.front().depth;
+
+		if (t_x == 3 && t_y == 3 && t_depth ==1)
+			printf("");
+
+		if(arr[t_y][t_x]==1)
+		house++;
+
+		que.pop();
+
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (boundary(t_x + dx[i], t_y + dy[i]) && visit[t_y + dy[i]][t_x + dx[i]] == 0 )
+			{
+				visit[t_y + dy[i]][t_x + dx[i]] = 1;
+				que.push({ t_x + dx[i],t_y + dy[i],t_depth + 1 });
+
+			}
+
+
+		}
+
+		if ((!que.empty() && pre != que.front().depth)  || (que.empty()))
+		{
+			pre = t_depth+1;
+			temp = M * house - (t_depth * t_depth + (t_depth - 1) * (t_depth - 1));
+
+			if (temp >= 0 && answer < house)
+				answer = house;
+		}
+	}
+
+	
+
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			visit[i][j] = 0;
+
+
+	return 0;	
+
+}
+
+	
+
+int main()
+{
+
+	scanf("%d", &T);
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		scanf("%d %d", &N, &M);
+
+		answer = 0;
+		
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				scanf("%d", &arr[i][j]);
+
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				sol(j, i);
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+}
