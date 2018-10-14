@@ -46,6 +46,19 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 삼성 기출 + 삼성  - https://www.acmicpc.net/workbook/view/2063
 
 
+## 알고리즘 공부
+
+https://kks227.blog.me/   라이님 블로그
+
+
+https://www.swexpertacademy.com/main/learn/course/courseList.do?#none - SW Expert Academy 무료 강의
+
+
+https://blog.naver.com/PostList.nhn?blogId=proability&parentCategoryNo=1 - 부지런돈부리
+
+
+
+
 
 
 ## 에러 팁
