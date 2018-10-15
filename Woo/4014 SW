@@ -2,29 +2,20 @@
 
 
 #include <stdio.h>
-#include <queue>
-#include <algorithm>
-#include <string.h>
-
-using namespace std;
 
 int T, answer, N, X;
 int arr[21][21];
 
-
-int sol_garo(int x, int y)			//i==5 일때 종료해라
+int sol_garo(int x, int y)			
 {
 	int visit[21] = { 0, };
-
 	int i = 0;
-	for (i; i !=N-1 ; i++)
+	for (i; i !=N-1 ; i++)		//i==N-1 일때 종료
 	{
-		if (arr[y][x + i] == arr[y][x + 1 + i])
-		{
+		if (arr[y][x + i] == arr[y][x + 1 + i]){	//같을때
 			continue;
 		}
-		else if (arr[y][x + i] - arr[y][x + 1 + i] == -1) // 우측이 높을때
-		{
+		else if (arr[y][x + i] - arr[y][x + 1 + i] == -1){				// 우측이 높을때
 			//설치가능여부 체크
 			if ((x + i) - (X - 1) >= 0)
 			{
@@ -42,9 +33,8 @@ int sol_garo(int x, int y)			//i==5 일때 종료해라
 			}
 			else
 				return 0;
-
 		}
-		else if (arr[y][x + i] - arr[y][x + 1 + i] == 1) // 우측이 낮을때
+		else if (arr[y][x + i] - arr[y][x + 1 + i] == 1)				// 우측이 낮을때
 		{
 			//가능여부 체크
 			if ((x + i) + X <= N - 1)
@@ -66,35 +56,30 @@ int sol_garo(int x, int y)			//i==5 일때 종료해라
 			}
 			else
 				return 0;
-
 		}
 		else
 			return 0;
 	}
-		
+
+	//활주로가 길이가 끝까지 도착했으면
 	if (i == N - 1)
 		answer++;
-
-
-
 
 	return 0;
 }
 
 
 
-int sol_sero(int x, int y)			//i==5 일때 종료해라
+int sol_sero(int x, int y)			
 {
 	int i = 0;
 	int visit[21] = { 0, };
-	for (i; i != N - 1; i++)
+	for (i; i != N - 1; i++)								//i==N-1 일때 종료			
 	{
-		if (arr[y + i][x] == arr[y + i + 1][x]) //같을때
-		{
+		if (arr[y + i][x] == arr[y + i + 1][x]){			//같을때
 			continue;
 		}
-		else if (arr[y + i][x] - arr[y + 1 + i][x] == -1) // 아래가 높을때
-		{
+		else if (arr[y + i][x] - arr[y + 1 + i][x] == -1){	// 아래가 높을때
 			//설치가능여부 체크
 			if ((y + i) - (X - 1) >= 0)
 			{
@@ -128,24 +113,18 @@ int sol_sero(int x, int y)			//i==5 일때 종료해라
 					else
 						return 0;
 				}
-
 				i = (i + X) - 1;
 				continue;
 			}
 			else
 				return 0;
-
 		}
 		else
 			return 0;
-
 	}
-
+	//활주로가 길이가 끝까지 도착했으면
 	if (i == N - 1)
 		answer++;
-
-
-
 
 	return 0;
 }
@@ -176,9 +155,7 @@ int main()
 		{
 			sol_garo(0,i);
 		}
-
 		printf("#%d %d\n", testcase, answer);
 	}
-
-
+	return 0;
 }
