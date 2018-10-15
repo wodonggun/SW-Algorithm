@@ -1,0 +1,151 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <queue>
+#include <deque>
+#include <math.h>
+
+using namespace std;
+queue<pair<int, int>> que;
+deque<int> deq[4];
+
+int T, answer, K;
+
+void calc() //점수 계산
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if(deq[i].at(0)==1)
+		answer +=  pow(2,i);
+
+		//덱 초기화
+		while (!deq[i].empty()) 
+		{
+			deq[i].pop_front();
+		}
+	}
+}
+
+void go_pop(int a, int b) //톱니 돌리기 num,dir 
+{
+	if (b == 1) {
+		int tmp = deq[a].back();
+		deq[a].pop_back();
+		deq[a].push_front(tmp);
+	}
+	else
+	{
+		int tmp = deq[a].front();
+		deq[a].pop_front();
+		deq[a].push_back(tmp);
+	}
+}
+
+
+int sol()
+{
+
+	while (!que.empty())
+	{
+		int num, dir;
+		num = que.front().first;
+		dir = que.front().second;
+		que.pop();
+
+
+		//우측 확인
+		if (num < 3 && deq[num].at(2) != deq[num + 1].at(6))
+		{
+			if (num + 1 < 3 && deq[num + 1].at(2) != deq[num + 2].at(6))
+			{
+
+				//최종부터 회전 시작
+				if (num + 2 < 3 && deq[num + 2].at(2) != deq[num + 3].at(6))
+				{
+					//
+					go_pop(num + 3, (dir)*(-1));
+
+				}
+				else// 회전 못할때
+					;
+				go_pop(num+2, (dir));
+			}
+			else// 회전 못할때
+				;
+			go_pop(num + 1, (dir)*(-1));
+		}
+		else
+			;
+				
+
+
+
+		//좌측 확인 
+		if (num >0 && deq[num].at(6) != deq[num-1].at(2))
+		{
+
+			if (num - 1 >0 && deq[num -2].at(2) != deq[num -1].at(6))
+			{
+
+				//최종부터 회전 시작
+				if (num - 2 > 0 && deq[num -3].at(2) != deq[num -2].at(6))
+				{
+					go_pop(num - 3, (dir)*(-1));
+				}
+				else// 회전 못할때
+					;
+				go_pop(num -2 , (dir));
+			}
+			else// 회전 못할때
+				;
+			go_pop(num - 1, (dir)*(-1));
+		}
+		else
+			;
+
+		//마지막 처음 자신 회전 
+		go_pop(num, dir);
+
+
+
+
+
+
+	} 
+
+	return 0;
+}
+
+int main()
+{
+
+	scanf("%d", &T);
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		answer = 0;
+
+		scanf("%d", &K);
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 8; j++) {
+				int k;
+				scanf("%d", &k);
+				deq[i].push_back(k);
+			}
+		}
+
+		for (int i = 0; i < K; i++)
+		{
+			int n, t;
+			scanf("%d %d", &n, &t);
+			que.push(make_pair(n - 1, t));
+
+		}
+
+		sol();
+		calc();
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+}
