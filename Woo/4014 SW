@@ -1,0 +1,184 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#include <stdio.h>
+#include <queue>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+int T, answer, N, X;
+int arr[21][21];
+
+
+int sol_garo(int x, int y)			//i==5 일때 종료해라
+{
+	int visit[21] = { 0, };
+
+	int i = 0;
+	for (i; i !=N-1 ; i++)
+	{
+		if (arr[y][x + i] == arr[y][x + 1 + i])
+		{
+			continue;
+		}
+		else if (arr[y][x + i] - arr[y][x + 1 + i] == -1) // 우측이 높을때
+		{
+			//설치가능여부 체크
+			if ((x + i) - (X - 1) >= 0)
+			{
+				visit[x+i] = 1;
+				for (int j = 1; j < X; j++)
+				{
+					if (arr[y][x + i] == arr[y][x + i - j] && visit[x+i-j]==0) {
+						visit[x + i - j] = 1;
+						continue;
+					}
+					else
+						return 0;
+				}
+				continue;
+			}
+			else
+				return 0;
+
+		}
+		else if (arr[y][x + i] - arr[y][x + 1 + i] == 1) // 우측이 낮을때
+		{
+			//가능여부 체크
+			if ((x + i) + X <= N - 1)
+			{
+				visit[x + i + 1] = 1;
+				for (int j = 1; j < X; j++)
+				{
+			
+					if (arr[y][x + i + j] == arr[y][x + i + j + 1] && visit[x + i + j + 1] == 0) {
+						visit[x + i + j +1] = 1;
+						continue;
+					}
+					else
+						return 0;
+				}
+
+				i = (i + X) - 1;
+				continue;
+			}
+			else
+				return 0;
+
+		}
+		else
+			return 0;
+	}
+		
+	if (i == N - 1)
+		answer++;
+
+
+
+
+	return 0;
+}
+
+
+
+int sol_sero(int x, int y)			//i==5 일때 종료해라
+{
+	int i = 0;
+	int visit[21] = { 0, };
+	for (i; i != N - 1; i++)
+	{
+		if (arr[y + i][x] == arr[y + i + 1][x]) //같을때
+		{
+			continue;
+		}
+		else if (arr[y + i][x] - arr[y + 1 + i][x] == -1) // 아래가 높을때
+		{
+			//설치가능여부 체크
+			if ((y + i) - (X - 1) >= 0)
+			{
+				visit[y + i] = 1;
+				for (int j = 1; j < X; j++)
+				{
+					if (arr[y + i][x] == arr[y + i - j][x] && visit[y + i - j] == 0) {
+						visit[y + i - j] = 1;
+						continue;
+					}
+					else
+						return 0;
+				}
+				continue;
+			}
+			else
+				return 0;
+		}
+		else if (arr[y + i][x] - arr[y + 1 + i][x] == 1) // 아래가 낮을때
+		{
+			//가능여부 체크
+			if ((y + i) + X <= N - 1)
+			{
+				visit[y + i + 1] = 1;
+				for (int j = 1; j < X; j++)
+				{
+					if (arr[y + i + j][x] == arr[y + i + j + 1][x] && visit[y+i+j+1]==0) {
+						visit[y + i + j + 1] = 1;
+						continue;
+					}
+					else
+						return 0;
+				}
+
+				i = (i + X) - 1;
+				continue;
+			}
+			else
+				return 0;
+
+		}
+		else
+			return 0;
+
+	}
+
+	if (i == N - 1)
+		answer++;
+
+
+
+
+	return 0;
+}
+
+
+int main()
+{
+	scanf("%d",&T);
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		answer = 0;
+		scanf("%d %d", &N, &X);
+
+		for(int i=0;i<N;i++)
+			for (int j = 0; j < N; j++)
+			{
+				scanf("%d", &arr[i][j]);
+			}
+
+		//아래 탐색(세로)
+		for (int i = 0; i < N; i++)
+		{
+			sol_sero(i,0);
+		}
+
+		//우측 탐색(가로)
+		for (int i = 0; i < N; i++)
+		{
+			sol_garo(0,i);
+		}
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+
+}
