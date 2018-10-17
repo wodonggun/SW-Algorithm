@@ -1,0 +1,215 @@
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <queue>
+#include <deque>
+#include <algorithm>
+
+using namespace std;
+
+int dx[5] = { 0,0,1,0,-1 };
+int dy[5] = { 0,-1,0,1,0 };
+
+struct device_BC {
+	int x, y, range, power, entering;
+};
+
+struct str_bfs {
+	int x, y,num,depth;
+};
+
+deque<int> vec[10][10];
+queue<str_bfs> bfs_que;
+device_BC device[10];
+int visit[10][10];
+int consol_time[101][2];
+int M, T, A, answer;
+
+int person[2][2]; //A,B의 x좌표 y좌표
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < 10 && y < 10);
+}
+
+int sol(int time, int a_count, int b_count)
+{
+
+
+	int max1 = 0;
+	int max2 = 0;
+
+	//현재위치 점수 계산
+	//둘다 1보다 클때
+	if (vec[person[0][1]][person[0][0]].size() >= 1 && vec[person[1][1]][person[1][0]].size() >= 1)
+	{
+		for (int i = 0; i < vec[person[0][1]][person[0][0]].size(); i++)
+			for (int j = 0; j < vec[person[1][1]][person[1][0]].size(); j++)
+			{
+				int tm_a;
+				int tm_b;
+				int dev_a = vec[person[0][1]][person[0][0]].at(i);
+				int dev_b = vec[person[1][1]][person[1][0]].at(j);
+
+				if (dev_a == dev_b)
+				{
+					tm_a = (device[dev_a].power) / 2;
+					tm_b = (device[dev_b].power) / 2;
+				}
+				else {
+					tm_a = (device[dev_a].power);
+					tm_b = (device[dev_b].power);
+				}
+
+				if (tm_a + tm_b > max1 + max2)
+				{
+					max1 = tm_a;
+					max2 = tm_b;
+				}
+
+			}
+
+	}
+	else
+	{
+		//a 위치 최대 찾기
+		for (int i = 0; i < vec[person[0][1]][person[0][0]].size(); i++)
+		{
+			if (device[vec[person[0][1]][person[0][0]].at(i)].power > max1)
+				max1 = device[vec[person[0][1]][person[0][0]].at(i)].power;
+
+		}
+
+		//b 위치 최대 찾기
+		for (int i = 0; i < vec[person[1][1]][person[1][0]].size(); i++)
+		{
+			if (device[vec[person[1][1]][person[1][0]].at(i)].power > max2)
+				max2 = device[vec[person[1][1]][person[1][0]].at(i)].power;
+
+		}
+	}
+
+
+
+	//dfs 종료문
+		if (time >= M)
+		{
+			answer = a_count+max1 + b_count+max2;
+
+			return 0;
+		}
+		else {
+			person[0][0] += dx[consol_time[time][0]];
+			person[0][1] += dy[consol_time[time][0]];
+
+			person[1][0] += dx[consol_time[time][1]];
+			person[1][1] += dy[consol_time[time][1]];
+
+			sol(time + 1, a_count + max1, b_count + max2);
+		}
+	return 0;
+}
+
+
+int init()
+{
+	answer = 0;
+	for (int i = 0; i < 10; i++)
+		for (int j = 0; j < 10; j++)
+			visit[i][j] = 0;
+
+
+	while (!bfs_que.empty())
+		bfs_que.pop();
+
+	for (int i = 0; i < 10; i++)
+		for(int j=0;j<10;j++)
+	{
+			while (!vec[i][j].empty())
+				vec[i][j].pop_back();
+	}
+
+	person[0][0] = 0;
+	person[0][1] = 0;
+	person[1][0] = 9;
+	person[1][1] = 9;
+
+	return 0;
+}
+
+// 장비 위치 x , y  , range, power
+int bfs(int x,int y, int c,int bc_num)
+{
+	visit[y][x] = 1;
+	bfs_que.push({ x,y,bc_num,0 });
+	vec[y][x].push_back(bc_num);
+
+	while (!bfs_que.empty())
+	{
+		str_bfs tmp = bfs_que.front();
+		int tx = tmp.x;
+		int ty = tmp.y;
+		bfs_que.pop();
+
+		for (int i = 1; i < 5; i++)
+		{
+			if (boundary(tx + dx[i], ty + dy[i]) && visit[ty + dy[i]][tx + dx[i]] == 0 && tmp.depth < c)
+			{
+				visit[ty + dy[i]][tx + dx[i]] = 1;
+				vec[ty + dy[i]][tx + dx[i]].push_back(bc_num);
+				bfs_que.push({ tx + dx[i] ,ty + dy[i], bc_num, tmp.depth + 1 });
+			}
+		}
+
+	}
+
+	return 0;
+}
+
+int main()
+{
+
+	scanf("%d", &T);
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		//초기화
+		init();
+
+		scanf("%d %d", &M,&A);
+	
+		// A 방향 순서
+		for (int i = 0; i < M; i++){
+			scanf("%d", &consol_time[i][0]);
+		}
+
+		//B 방향 순서
+		for (int i = 0; i < M; i++){
+			scanf("%d", &consol_time[i][1]);
+		}
+
+		//	 x, y, range power 
+		for (int i = 1; i <= A; i++)
+		{
+			int a, b, c, d;
+			scanf("%d %d %d %d", &a, &b, &c, &d);
+			
+			device[i].x = a-1;
+			device[i].y = b-1;
+			device[i].range = c;
+			device[i].power = d;
+
+			bfs(a-1, b-1, c,i);
+
+			for (int i2 = 0; i2 < 10; i2++)
+				for (int j2 = 0; j2 < 10; j2++)
+					visit[i2][j2] = 0;
+		}
+		
+
+		sol(0,0,0);
+
+		printf("#%d %d\n", testcase, answer);
+	}
+	
+}
