@@ -1,0 +1,98 @@
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+
+int N, T,answer;
+
+int free_pass[4];
+int arr_tmp[12];
+
+typedef struct str {
+	int arr[12];
+};
+
+str plan;
+
+int dfs(int cur,str plan_t,int count)
+{
+	//종료 조건 (0월 ~ 11월까지)
+	if(cur>=12){
+
+		if (count < answer)
+			answer = count;
+		return 0;
+
+	}
+	
+
+	str tmp = plan_t;
+	//3개월
+	for (int i = cur; i < 12; i++)
+	{
+		if (tmp.arr[i] > 0)
+		{
+			dfs(i + 3, tmp, count + free_pass[2]);
+			break;
+		}
+
+	}
+
+	//1개월
+	for (int i = cur; i < 12; i++)
+	{
+		if (tmp.arr[i] > 0)
+		{
+			dfs(i + 1, tmp, count + free_pass[1]);
+			break;
+		}
+
+	}
+
+	//1일짜리
+	for (int i = cur; i < 12; i++)
+	{
+		if (tmp.arr[i] > 0)
+		{
+			dfs(i + 1, tmp, count + (free_pass[0]*plan_t.arr[i]));
+			break;
+		}
+		
+		if (i == 11) {
+			if (count < answer)
+				answer = count;
+		}
+	}
+
+
+	
+	
+
+	return 0;
+}
+
+int main()
+{
+	scanf("%d",&T);
+
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		answer = 987654321;
+
+		for(int i=0;i<4;i++)
+		scanf("%d",&free_pass[i]);
+		
+		for (int i = 0; i < 12; i++) {
+			scanf("%d", &arr_tmp[i]);
+			plan.arr[i] = arr_tmp[i];
+		}
+		
+		answer = free_pass[3];
+
+		dfs(0,plan,0);
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+	return 0;
+}
