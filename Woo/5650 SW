@@ -1,0 +1,232 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+
+
+
+typedef struct str {
+	int x, y, dir, count;
+}str;
+
+typedef struct str_warm {
+	int x[2], y[2],pos;
+}str_warm;
+
+
+str_warm warm[11];
+
+
+int T, N, answer;
+int arr[102][102];
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+int block_dir(int block, int dir)
+{
+	int tmp_dir = 0;
+
+	if (block == 1)
+	{
+		switch (dir)
+		{
+		case 0: tmp_dir = 2; break;
+		case 1: tmp_dir = 3; break;
+		case 2: tmp_dir = 1; break;
+		case 3: tmp_dir = 0; break;
+		}
+	}
+	else if (block == 2)
+	{
+		switch (dir)
+		{
+		case 0: tmp_dir = 1; break;
+		case 1: tmp_dir = (dir + 2) % 4; break;
+		case 2: tmp_dir = (dir + 2) % 4; break;
+		case 3: tmp_dir = 2; break;
+		}
+	}
+	else if (block == 3)
+	{
+		switch (dir)
+		{
+		case 0: tmp_dir = 3; break;
+		case 1: tmp_dir = 2; break;
+		case 2: tmp_dir = (dir + 2) % 4; break;
+		case 3: tmp_dir = (dir + 2) % 4; break;
+		}
+	}
+	else if (block == 4)
+	{
+		switch (dir)
+		{
+		case 0: tmp_dir = (dir + 2) % 4; break;
+		case 1: tmp_dir = 0; break;
+		case 2: tmp_dir = 3; break;
+		case 3: tmp_dir = (dir + 2) % 4; break;
+		}
+	}
+	else if (block == 5)
+	{
+		tmp_dir = (dir + 2) % 4;
+	}
+	else
+		;
+
+	return tmp_dir;
+}
+
+
+
+int sol(int x, int y, int dir, str s)
+{
+	if (!boundary(x, y) || s.count > 5000)
+		return 0;
+	
+
+	//종료조건 
+	if ( arr[y][x] == -1 || (x==s.x && y==s.y)  )		//블랙홀이거나 스타팅 위치
+	{
+		if (s.count >= answer)
+		{
+			answer = s.count;
+		}
+		return 0;
+
+	}
+	else if (arr[y][x]>=1 && arr[y][x]<6) //블록일때
+	{
+		
+		int tmp_dir = block_dir(arr[y][x], dir);
+		if (boundary(x + dx[tmp_dir], y + dy[tmp_dir])) {
+			sol(x + dx[tmp_dir], y + dy[tmp_dir], tmp_dir, {s.x, s.y, s.dir, s.count+1});
+			return 0;
+		}
+		else
+		{
+			sol(x + dx[(dir + 2) % 4], y + dy[(dir + 2) % 4], (dir + 2) % 4, { s.x, s.y, s.dir, s.count + 3 });
+			return 0;
+		}
+	
+	}
+	else if (arr[y][x] >= 6 && arr[y][x]<=10)//웜홀일때 
+	{
+		if (warm[arr[y][x]].x[0] == x && warm[arr[y][x]].y[0] == y) { // 웜홀 이동 선택
+
+			
+			if (boundary(warm[arr[y][x]].x[1] + dx[dir], warm[arr[y][x]].y[1] + dy[dir]))
+			{
+			sol(warm[arr[y][x]].x[1] + dx[dir], warm[arr[y][x]].y[1] + dy[dir], dir, s);
+			return 0;
+			}
+			else{//만약 웜홀이 벽에 붙어서 다음위치로 갈수없으면
+				sol(x + dx[((dir + 2) % 4)], y+dy[((dir+2)%4)], (dir+2)%4, { s.x, s.y, s.dir, s.count + 1 });
+				return 0;
+			}
+				
+
+		}
+		else //웜홀 이동 선택2
+		{
+			if (boundary(warm[arr[y][x]].x[0] + dx[dir], warm[arr[y][x]].y[0] + dy[dir])) {
+				sol((warm[arr[y][x]].x[0]) + dx[dir], (warm[arr[y][x]].y[0]) + dy[dir], dir, s);
+				return 0;
+			}
+			else
+			{
+				sol( x + dx[((dir + 2) % 4)], y + dy[((dir + 2) % 4)], ((dir+2)%4), { s.x, s.y, s.dir, s.count + 1 });
+				return 0;
+			}
+
+		}
+
+	}
+
+	else if(arr[y][x]==0 )//그냥 빈곳일때
+	{
+		for (int i = 1; i < N; i++)
+		{
+			if ((boundary((x + (dx[dir] * i)), (y + (dy[dir] * i))) && arr[(y + (dy[dir] * i))][(x + (dx[dir] * i))] > 0) || (boundary(x + (dx[dir] * i), y + (dy[dir] * i)) && x + (dx[dir] * i) == s.x  &&  y + (dy[dir] * i) == s.y))
+			{
+				sol(x + (dx[dir] * i), y + (dy[dir] * i), dir, s);
+				return 0;
+			}
+			else if(!boundary(x + (dx[dir] * i), y + (dy[dir] * i))){		//벽일때
+				sol(x, y, ((dir + 2) % 4), { s.x, s.y, s.dir, s.count + 1 });
+			}
+		}
+	}
+	else
+	{
+		printf("error");
+	}
+
+	
+	return 0;
+
+}
+
+
+
+
+
+int main()
+{
+		
+	scanf("%d", &T);
+	
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		//초기화
+		answer = 0;
+		for (int i = 0; i < 11; i++) {
+			warm[i].pos = 0;
+		}
+
+
+
+		scanf("%d", &N);
+
+		for(int i=0;i<N;i++)
+			for (int j = 0; j < N; j++)
+			{
+				scanf("%d", &arr[i][j]);
+				if (arr[i][j] >= 6 && arr[i][j]<=10)
+				{
+					warm[arr[i][j]].x[(warm[arr[i][j]].pos)] = j;
+					warm[arr[i][j]].y[(warm[arr[i][j]].pos)] = i;
+					warm[arr[i][j]].pos = 1;
+				}
+			}
+
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				for (int k = 0; k < 4; k++) {
+					if (boundary(j + dx[k], i + dy[k]) && arr[i][j] == 0)
+					{
+						str tmp = { j,i,0,0 };
+						sol(j + dx[k], i + dy[k], k, tmp);
+					}
+					else if(arr[i][j]==0 )
+					{
+						if (answer == 0)
+							answer = 1;
+					}
+				}
+			}
+		}
+
+
+		printf("#%d %d\n", testcase, answer);
+	}
+		
+		
+	return 0;
+}
