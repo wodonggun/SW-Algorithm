@@ -41,6 +41,8 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 
 ## 기출 모음집
 
+단계별 알고리즘 공부 - https://www.acmicpc.net/step
+
 삼성 기출 - https://www.acmicpc.net/workbook/view/1152
 
 삼성 기출 + 삼성 유사 문제 - https://www.acmicpc.net/workbook/view/2063
