@@ -43,7 +43,7 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 
 삼성 기출 - https://www.acmicpc.net/workbook/view/1152
 
-삼성 기출 + 삼성  - https://www.acmicpc.net/workbook/view/2063
+삼성 기출 + 삼성 유사 문제 - https://www.acmicpc.net/workbook/view/2063
 
 
 ## 알고리즘 공부
@@ -83,6 +83,14 @@ https://blog.naver.com/PostList.nhn?blogId=proability&parentCategoryNo=1 - 부�
 2. 어디서인가 예외가 발생하고 있다.
 3. 머리속으로 임의의 값을 넣어보고 A4에 풀어보고 그 값이 나오는지 확인 
 (ex: 전체 배열을 1로 채우고 탐색하기, 한번도 시도하지 않는 경우 해보기)
+
+- 비주얼과 GCC의 결과 값이 다르다?
+1. 배열(레퍼런스)에 증감연산자를 사용했다. arr[count++][100]
+2. 엉뚱한 값이나 잘못된 참조를 통해 중간에 중단되었다.
+
+
+
+
 
 ### 숫자 따로 받기
 ```
