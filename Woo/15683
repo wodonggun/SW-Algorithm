@@ -1,0 +1,244 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <deque>
+using namespace std;
+
+typedef struct str{
+	int x, y, num;
+}str;
+
+deque<str> que;
+
+
+
+int arr[9][9];
+int N, M, answer = 987654321;
+int depth_tmp[65][9][9]; // depth ,y, x
+int arr_tmp[9][9];
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < M && y < N);
+}
+
+int dfs(int cur, int depth)
+{
+	//종료조건 
+	if (cur == que.size())
+	{
+		int tmp_answer = 0;
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++) {
+				if (arr_tmp[i][j] == 0)
+					tmp_answer++;
+			}
+		if (answer > tmp_answer)
+			answer = tmp_answer;
+
+		return 0;
+	}
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+			depth_tmp[depth][i][j] = arr_tmp[i][j];
+
+	//dfs 5개 cctv ->  4방향,
+	if (que.at(cur).num == 1)
+	{
+		str a = que.at(cur);
+
+		for (int i = 0; i < 4; i++)
+		{	
+			//이전 상태로 복원 
+			for (int i2 = 0; i2 < N; i2++)
+				for (int j2 = 0; j2 < M; j2++)
+					arr_tmp[i2][j2] = depth_tmp[depth][i2][j2];
+
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[i]*j, a.y + dy[i]*j) )
+				{
+					if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 0)
+						arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] = -1;
+					else
+						;
+				}
+
+			}
+			dfs(cur + 1, depth +1);
+
+		}
+
+	}
+	else if (que.at(cur).num == 2)
+	{
+		str a = que.at(cur);
+		int dir = 1;
+		for (int i = 0; i < 2; i++)
+		{
+			//이전 상태로 복원 
+			for (int i2 = 0; i2 < N; i2++)
+				for (int j2 = 0; j2 < M; j2++)
+					arr_tmp[i2][j2] = depth_tmp[depth][i2][j2];
+
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[dir] * j, a.y + dy[dir] * j))
+				{
+					if (arr_tmp[a.y + dy[dir] * j][a.x + dx[dir] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[dir] * j][a.x + dx[dir] * j] == 0)
+						arr_tmp[a.y + dy[dir] * j][a.x + dx[dir] * j] = -1;
+				}
+
+			}
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[(dir + 2) % 4] * j, a.y + dy[(dir + 2) % 4] * j) )
+				{
+					if (arr_tmp[a.y + dy[(dir + 2) % 4] * j][a.x + dx[(dir + 2) % 4] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[(dir + 2) % 4] * j][a.x + dx[(dir + 2) % 4] * j] == 0)
+						arr_tmp[a.y + dy[(dir + 2) % 4] * j][a.x + dx[(dir + 2) % 4] * j] = -1;
+				}
+
+			}
+			dfs(cur + 1, depth + 1);
+
+			dir++;
+		}
+	}
+	else if (que.at(cur).num == 3)
+	{
+		str a = que.at(cur);
+
+		for (int i = 0; i < 4; i++)
+		{
+			//이전 상태로 복원 
+			for (int i2 = 0; i2 < N; i2++)
+				for (int j2 = 0; j2 < M; j2++)
+					arr_tmp[i2][j2] = depth_tmp[depth][i2][j2];
+
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[i] * j, a.y + dy[i] * j))
+				{
+					if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 0)
+						arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] = -1;
+				}
+
+			}
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[(i +1)%4 ] * j, a.y + dy[(i + 1) % 4] * j) )
+				{
+					if (arr_tmp[a.y + dy[(i + 1) % 4] * j][a.x + dx[(i + 1) % 4] * j] == 6)
+						break;
+					if (arr_tmp[a.y + dy[(i + 1) % 4] * j][a.x + dx[(i + 1) % 4] * j] == 0)
+						arr_tmp[a.y + dy[(i + 1) % 4] * j][a.x + dx[(i + 1) % 4] * j] = -1;
+				}
+
+			}
+			dfs(cur + 1, depth + 1);
+
+		}
+	}
+	else if (que.at(cur).num == 4)
+	{
+		str a = que.at(cur);
+
+		for (int i = 0; i < 4; i++)
+		{
+			//이전 상태로 복원 
+			for (int i2 = 0; i2 < N; i2++)
+				for (int j2 = 0; j2 < M; j2++)
+					arr_tmp[i2][j2] = depth_tmp[depth][i2][j2];
+
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[i] * j, a.y + dy[i] * j))
+				{
+					if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 0)
+						arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] = -1;
+				}
+
+			}
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[(i + 1) % 4] * j, a.y + dy[(i + 1) % 4] * j))
+				{
+					if (arr_tmp[a.y + dy[(i + 1) % 4] * j][a.x + dx[(i + 1) % 4] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[(i + 1) % 4] * j][a.x + dx[(i + 1) % 4] * j] == 0)
+						arr_tmp[a.y + dy[(i + 1) % 4] * j][a.x + dx[(i + 1) % 4] * j] = -1;
+				}
+
+			}
+			for (int j = 1; j <9; j++)
+			{
+				if (boundary(a.x + dx[(i + 2) % 4] * j, a.y + dy[(i + 2) % 4] * j))
+				{
+					if (arr_tmp[a.y + dy[(i + 2) % 4] * j][a.x + dx[(i + 2) % 4] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[(i + 2) % 4] * j][a.x + dx[(i + 2) % 4] * j] == 0)
+						arr_tmp[a.y + dy[(i + 2) % 4] * j][a.x + dx[(i + 2) % 4] * j] = -1;
+				}
+
+			}
+
+			dfs(cur + 1, depth + 1);
+
+		}
+	}
+	else if (que.at(cur).num == 5)
+	{
+		str a = que.at(cur);
+
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 1; j < 9; j++)
+			{
+				if (boundary(a.x + dx[i] * j, a.y + dy[i] * j))
+				{
+					if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 6)
+						break;
+					else if (arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] == 0)
+						arr_tmp[a.y + dy[i] * j][a.x + dx[i] * j] = -1;
+				}
+			}
+		}
+		dfs(cur + 1, depth + 1);
+	}
+
+	else
+		printf("error");
+
+
+	return 0;
+}
+int main()
+{
+	scanf("%d %d", &N, &M);
+
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++) {
+			scanf("%d", &arr[i][j]);
+			arr_tmp[i][j] = arr[i][j];
+			if (arr[i][j] >= 1 && arr[i][j] <= 5)
+				que.push_back({ j,i,arr[i][j] });
+		}
+		
+	dfs(0, 0);
+
+	printf("%d", answer);
+	return 0;
+}
