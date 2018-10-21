@@ -1,0 +1,93 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#include <stdio.h>
+#include <deque>
+
+using namespace std;
+
+int arr[51][51];
+int visit[51][51];
+
+int pipe[8][4]{
+	{0,0,0,0},
+	{1,1,1,1},
+	{1,0,1,0},
+	{0,1,0,1},
+	{1,1,0,0},
+	{0,1,1,0},
+	{0,0,1,1},
+	{1,0,0,1}
+};
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+int answer, T, N, M, L;
+int start_x, start_y;
+
+typedef struct str {
+	int x, y, depth;
+}str;
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < M && y < N);
+}
+
+deque<str> que;
+
+void init()
+{
+	answer = 0;
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+			visit[i][j] = 0;
+}
+
+int main()
+{
+	scanf("%d", &T);
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		scanf("%d %d %d %d %d", &N, &M, &start_y, &start_x, &L);//세로 N  가로 M 
+
+		//초기화
+		init();
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
+				scanf("%d", &arr[i][j]);
+
+		//스타팅 포인트 푸쉬
+		que.push_back({ start_x,start_y,1 });
+		visit[start_y][start_x] = 1;
+		
+		while (!que.empty())
+		{
+			str tmp = que.front();
+			que.pop_front();
+
+			//현재 위치에서 4방향 갈수있는거 체크
+			for (int k = 0; k < 4; k++) {
+				if (boundary(tmp.x + dx[k], tmp.y + dy[k]) && pipe[arr[tmp.y][tmp.x]][k] == 1 && pipe[arr[tmp.y + dy[k]][tmp.x + dx[k]]][(k + 2) % 4] == 1 && visit[tmp.y+dy[k]][tmp.x+dx[k]]==0 && tmp.depth<L)
+				{
+					visit[tmp.y + dy[k]][tmp.x + dx[k]] = 1;
+					que.push_back({ tmp.x + dx[k],tmp.y + dy[k],tmp.depth + 1 });
+				}
+			}
+		}
+
+		//정답 도출
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
+				if (visit[i][j] == 1)
+					answer++;
+
+		printf("#%d %d\n", testcase, answer);
+	}
+	
+	
+
+	return 0;
+}
