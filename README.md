@@ -91,7 +91,7 @@ https://blog.naver.com/PostList.nhn?blogId=proability&parentCategoryNo=1 - 부�
 2. 엉뚱한 값이나 잘못된 참조를 통해 중간에 중단되었다.
 
 
-
+https://www.acmicpc.net/blog/view/70
 
 
 ### 숫자 따로 받기
