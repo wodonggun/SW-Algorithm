@@ -1,0 +1,163 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+typedef struct namu {
+	int age;
+	int alive;
+}namu;
+
+
+int N, M, K;
+int r, c;
+int yangbun_plus[11][11];
+int yangbun[11][11];
+int A[11][11];
+
+
+deque<namu> vec[11][11];
+
+int answer;
+int dy[8] = { -1,-1,-1,0,1,1, 1, 0 };
+int dx[8] = { -1, 0, 1,1,1,0,-1,-1 };
+
+	
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+int main()
+{
+	scanf("%d %d %d", &N, &M, &K);
+
+	//양분 받기
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			scanf("%d", &yangbun_plus[i][j]);
+			yangbun[i][j] = 5;
+			//기본 5시작 
+		}
+	}
+
+	//나무 값
+	for (int i = 0; i < M; i++)
+	{
+		int tr, tc,tage;
+		scanf("%d %d %d", &tr, &tc,&tage);
+		vec[tr-1][tc-1].push_back({ tage,1 });
+	}
+
+	while (K--)
+	{
+		//봄
+		for(int i=0;i<N;i++)
+			for (int j = 0; j < N; j++)
+			{
+				for (int k = 0; k < vec[i][j].size(); k++)
+				{
+					//양분 공급이 될때 
+					if ( yangbun[i][j]- vec[i][j].at(k).age >= 0)
+					{
+						yangbun[i][j] = yangbun[i][j] - vec[i][j].at(k).age;
+						vec[i][j].at(k).age = vec[i][j].at(k).age+1;
+					}
+					else
+						vec[i][j].at(k).alive = 0;	//yangbun[i][j] += (vec[i][j].at(k).age / 2);
+				}
+
+			}
+
+		//여름
+		
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++)
+			{
+				int pop_count = 0;
+				for (int k = 0; k < vec[i][j].size(); k++)
+				{
+					if (vec[i][j].at(k).alive == 0)
+					{
+						yangbun[i][j] = yangbun[i][j] + ((vec[i][j].at(k).age) / 2);
+						pop_count++;
+					}
+					else
+						;
+				}
+				for (int z = 0; z < pop_count; z++)
+				{
+					vec[i][j].pop_back();
+				}
+			}
+			
+		}
+
+	
+
+
+		//가을
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++)
+			{
+				for (int k = 0; k < vec[i][j].size(); k++)
+				{
+					if (vec[i][j].at(k).age % 5 == 0) //5의 배수일때
+					{
+						for (int z = 0; z < 8; z++)
+						{
+							if(boundary(j+dx[z],i+dy[z]))	//경계값 내부일때 
+							A[i+dy[z]][j+dx[z]]= A[i + dy[z]][j + dx[z]]+1;	//새로운 나무 심기
+						}
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				for (int k = 0; k < A[i][j]; k++)
+				{
+					vec[i][j].push_front({ 1,1 });
+				}
+
+				A[i][j] = 0;
+			}
+		}
+
+
+		//겨울
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				yangbun[i][j] += yangbun_plus[i][j];
+			}
+		}
+
+
+
+	}
+
+
+	for (int i = 0; i < N; i++) 
+	{
+		for (int j = 0; j < N; j++)
+		{
+			answer += vec[i][j].size();
+		}
+	}
+
+	printf("%d", answer);
+
+	return 0;
+
+
+}
