@@ -1,0 +1,152 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <queue>
+
+using namespace std;
+
+struct namu {
+	int age;
+	int cnt;
+};
+
+
+int N, M, K;
+int r, c;
+
+
+int yangbun_plus[10][10];
+int yangbun[10][10];
+
+
+deque<namu> vec[10][10];
+
+
+int dy[] = { -1,-1,-1,0,1,1, 1, 0 };
+int dx[] = { -1, 0, 1,1,1,0,-1,-1 };
+
+int main()
+{
+	scanf("%d %d %d", &N, &M, &K);
+
+	//양분 받기
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+		{
+			scanf("%d", &yangbun_plus[i][j]);
+			yangbun[i][j] = 5;  //기본 5시작 	
+		}
+
+	//나무 값
+	for (int i = 0; i < M; i++)
+	{
+		int tr, tc, tage;
+		scanf("%d %d %d", &tr, &tc, &tage);
+		vec[tr - 1][tc - 1].push_back({ tage,1 });
+	}
+
+
+
+	while (K--)
+	{
+		//봄 + 여름 	
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+			{
+				int size = vec[i][j].size();
+				int count = 0;
+				for (int k = 0; k < size; k++)
+				{
+					namu &x = vec[i][j][k];
+					//양분 공급이 될때 
+					if (yangbun[i][j] - x.age * x.cnt >= 0)
+					{
+						yangbun[i][j] = yangbun[i][j] - x.age * x.cnt;
+						x.age++;
+						count++;
+					}
+					else
+					{
+						int tmp = x.cnt;
+
+						x.cnt = yangbun[i][j] / x.age;			//살아남은 나무 수 =  양분/나이
+						yangbun[i][j] = yangbun[i][j] % x.age;	//남아있는 양분(나머지) = 양분 % 나이
+
+						//여름(양분 되기)
+						yangbun[i][j] = yangbun[i][j] + ((tmp - x.cnt)*(x.age >> 1));		// 양분 = 양분 + (죽은 나무 * (나이/2))
+
+						x.age++;
+
+						if (x.cnt == 0)
+							count--;
+
+						break;
+					}
+				}
+
+				//양분 공급 안된부분 pop
+				for (int t = 0; t < (size - 1) - count; t++)
+				{
+					yangbun[i][j]+= (vec[i][j][size - 1 - t].age >> 1) * vec[i][j][size - 1 - t].cnt;
+					vec[i][j].pop_back();
+				}
+
+
+			}
+
+
+
+
+
+
+		//가을
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++)
+			{
+
+				for (auto x : vec[i][j])
+				{
+					if (x.age % 5 == 0) //5의 배수일때
+					{
+						for (int z = 0; z < 8; z++)
+						{
+							int nx = j + dx[z];
+							int ny = i + dy[z];
+							if (nx >= 0 && ny >= 0 && nx < N && ny < N) {					//경계값 내부일때 
+								if (vec[ny][nx].empty() || vec[ny][nx].front().age != 1)
+									vec[ny][nx].push_front({ 1, x.cnt });
+								else
+									vec[ny][nx].front().cnt += x.cnt;
+							}
+
+						}
+					}
+				}
+			}
+		}
+
+
+
+
+		//겨울
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				yangbun[i][j] += yangbun_plus[i][j];
+
+
+	}
+
+	int answer = 0;
+	//결과 계산 (살아있는 나무수 연산)
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			for (auto x : vec[i][j])
+				answer += x.cnt;
+
+
+	printf("%d", answer);
+
+	return 0;
+
+
+}
