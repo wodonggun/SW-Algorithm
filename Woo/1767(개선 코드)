@@ -1,0 +1,123 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <deque>
+
+typedef struct core
+{
+	int x, y;
+
+}core;
+
+
+using namespace std;
+
+int Testcase;
+int N, answer = 987654321;
+int max_core = 0;
+int arr[14][14];
+
+deque<core> que;
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+
+void sol(int depth, int line_count, int select_core)
+{
+	//종료 조건 
+	if (depth == que.size())
+	{
+		if (max_core <= select_core) {
+
+			if (max_core < select_core) {
+				max_core = select_core;
+				answer = line_count;
+			}
+			else if (max_core == select_core)
+			{
+				if (answer > line_count)
+					answer = line_count;
+			}
+			else
+				printf("error");
+
+		}
+		else
+			;
+
+		return;
+	}
+
+
+	//4방향 dfs
+	for (int k = 0; k < 4; k++) {
+		int index = 1;
+		int x = que.at(depth).x;
+		int y = que.at(depth).y;
+
+		//회로 연결하기
+		while (arr[y + dy[k] * index][x + dx[k] * index] == 0 && boundary(x + dx[k] * index, y + dy[k] * index) )
+		{
+			arr[y + dy[k] * index][x + dx[k] * index] = 2;
+			index++;
+		}
+
+		//벽일때 = 회로가 연결되어있을때
+		if (x + dx[k] * (index - 1) == 0 || x + dx[k] * (index - 1) == N - 1 || y + dy[k] * (index - 1) == 0 || y + dy[k] * (index - 1) == N - 1)
+		{
+			sol(depth + 1, line_count + (index - 1), select_core + 1);
+		}
+
+		//재귀 돌아왔거나 벽까지 못갔을때  되돌리기
+		for (int i = 1; i < index; i++)
+		{
+			arr[y + dy[k] * i][x + dx[k] * i] = 0;
+		}
+
+
+	}
+
+	sol(depth + 1, line_count, select_core);
+
+
+
+}
+
+int main()
+{
+
+	scanf("%d", &Testcase);
+
+	for (int T = 1; T <= Testcase; T++)
+	{
+		//초기화
+		answer = 987654321;
+		max_core = 0;
+
+		//큐 비우기
+		while (!que.empty()) {
+			que.pop_back();
+		}
+
+
+		scanf("%d", &N);
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++) {
+				scanf("%d", &arr[i][j]);
+				if (arr[i][j] == 1 && i != 0 && i != N - 1 && j != 0 && j != N - 1)	//외각 코어는 제외
+					que.push_back({ j,i });
+
+			}
+
+		sol(0, 0, 0);
+
+		printf("#%d %d\n", T, answer);
+	}
+
+}
