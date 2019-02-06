@@ -78,7 +78,7 @@ https://blog.naver.com/PostList.nhn?blogId=proability&parentCategoryNo=1 - 부�
 - 시간 초과
 1. 무한루프에 빠짐.
 2. 탐색한곳을 계속 탐색하는 중복 탐색이 많음
-3. 
+3. 필요없는 연산을 중복해서 
 
 - 틀렸습니다
 1. 걍 너의 코드가 잘못됬다.
