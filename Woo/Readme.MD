@@ -28,5 +28,5 @@ https://www.acmicpc.net/problem/1260
 
 # ABS 절대값 
 
-~~#define ABS_max(a,b) a>b?a-b:b-a~~ 음수를 뺄때 2--1은 성립이 되지 않으므로, 2-(-1)이 되어야 함.
+~~#define ABS_max(a,b) a>b?a-b:b-a~~ 음수를 뺄때 2--1은 성립이 되지 않으므로, 2-(-1)이 되어야 함.  
 #define ABS_max(a,b) a>b?(a)-(b):(b)-(a)
