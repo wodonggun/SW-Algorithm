@@ -1,0 +1,155 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <deque>
+
+typedef struct core
+{
+	int x, y;
+
+}core;
+
+using namespace std;
+
+int Testcase;
+int N, answer=987654321;
+int max_core = 0;
+int arr[14][14];
+
+deque<core> que;
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+void sol(int depth,int count,int core_count)
+{
+	//종료 조건
+	if (depth == que.size())
+	{
+		if (max_core<=core_count) {
+			
+			if (max_core < core_count) {
+				max_core = core_count;
+				answer = count;
+			}
+			else if (max_core == core_count)
+			{
+				if (answer > count)
+					answer = count;
+			}
+
+		}
+		else
+			;
+
+		return ;
+	}
+
+
+	//4방향 dfs
+	for (int k = 0; k < 4; k++)
+	{
+		int tmp_count = count;
+		int x = que.at(depth).x;
+		int y = que.at(depth).y;
+
+		while (boundary(x, y)) {
+
+			//벽이면 dfs
+			if (x == 0 || y == 0 || x == N - 1 || y == N - 1)
+			{
+				sol(depth + 1, tmp_count, core_count + 1);
+
+				//돌아오고 되돌리기
+				arr[y][x] = 0;
+				int leng = 1;
+				while (1)
+				{
+					if (que.at(depth).x == x + dx[(k + 2) % 4] * leng && que.at(depth).y == y + dy[(k + 2) % 4] * leng)
+						break;
+					else
+						arr[y + dy[(k + 2) % 4] * leng][x + dx[(k + 2) % 4] * leng] = 0;
+					leng++;
+				}
+				break;
+			}
+
+			//방향으로 끝까지 이동
+			if (arr[y + dy[k]][x + dx[k]] == 0)
+			{
+				arr[y + dy[k]][x + dx[k]] = 2;
+				y += dy[k];
+				x += dx[k];
+				tmp_count++;
+			}
+			else		//만약 중간에 만나면 continue(채택은 하자)
+			{
+
+				//되돌리고
+				int leng = 1;
+				if (arr[y][x] == 2)
+					arr[y][x] = 0;
+
+				while (1)
+				{
+					if (que.at(depth).x == x + dx[(k + 2) % 4] * leng && que.at(depth).y == y + dy[(k + 2) % 4] * leng || (que.at(depth).x == x && que.at(depth).y == y))
+						break;
+					else
+						arr[y + dy[(k + 2) % 4] * leng][x + dx[(k + 2) % 4] * leng] = 0;
+					leng++;
+
+				}
+				break;
+			}
+
+
+		}
+
+
+	}
+
+
+	//코어 채택 안했을때
+	sol(depth + 1, count, core_count);
+
+	return;
+}
+
+
+int main()
+{
+	scanf("%d", &Testcase);
+
+	for (int T = 1; T <= Testcase; T++)
+	{
+		//초기화
+		answer = 987654321;
+		max_core = 0;
+
+		//큐 비우기
+		while (!que.empty()){
+			que.pop_back();
+		}
+
+
+		scanf("%d", &N);
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++) {
+				scanf("%d", &arr[i][j]);
+				if (arr[i][j] == 1 && i !=0 && i!=N-1 && j !=0 && j!=N-1)	//외각 코어는 제외
+					que.push_back({ j,i });
+
+			}
+
+		sol(0, 0,0);
+
+		printf("#%d %d\n",T, answer);
+	}
+
+}
