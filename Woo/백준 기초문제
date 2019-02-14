@@ -1,0 +1,270 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+using namespace std;
+
+
+//
+////시뮬레이션 1번
+//int main()
+//{
+//	int answer =0;
+//	int max  =0;
+//	int arr[5][2];
+//	for (int i = 0; i < 4; i++)
+//		scanf("%d %d", &arr[i][0], &arr[i][1]);
+//
+//	for (int i = 0; i < 4; i++)
+//	{
+//		answer -= arr[i][0];
+//		answer += arr[i][1];
+//		
+//		if (answer > max)
+//			max = answer;
+//	}
+//
+//	printf("%d", max);
+//	
+//
+//}
+
+
+
+//시뮬레이션 2번
+
+//int main()
+//{
+//	int X;
+//	scanf("%d", &X);
+//	int start = 64;
+//
+//	int sum = 0;
+//	int count = 0;
+//	while (start!=0)
+//	{
+//		if (X == 64) {
+//			count++;
+//			break;
+//		}
+//
+//		start /= 2;
+//
+//		if (sum + start <= X)
+//		{
+//			sum += start;
+//			count++;
+//		}
+//		else if (sum + start > X)
+//		{
+//			
+//		}
+//
+//		
+//		if (X == sum)
+//			break;
+//
+//	}
+//	
+//	printf("%d", count);
+//	
+//}
+//
+
+
+
+//// 시뮬레이션 3번
+//
+//#include <stdio.h>
+//#include <deque>
+//
+//deque<int> que;
+//
+//int main()
+//{
+//	int arr[100001];
+//	int answer =0 ;
+//	int N, A, B;
+//	scanf("%d %d %d", &N,&A,&B);
+//
+//	for (int i = 1; i <= N; i++)
+//	{
+//		que.push_back(i);
+//	}
+//	que.push_back(0);
+//	
+//
+//	while (1)
+//	{
+//		if (que.at(0) != 0) {
+//			int t1 = que.at(0);
+//			que.pop_front();
+//			int t2 = que.at(0);
+//				que.pop_front();
+//
+//				if (t1 == A && t2 == B)
+//				{
+//					break;
+//				}
+//
+//				if (t1 != A && t1 != B && t2 != A && t2 != B)
+//				{
+//					que.push_back(t1);
+//				}
+//				else
+//				{
+//					
+//
+//				}
+//
+//		}
+//
+//	}
+//
+//	printf("%d", answer);
+//	
+//}
+
+
+
+//2675
+//#include <stdio.h>
+//
+//int T, R;
+//
+//
+//
+//int len(char *str)
+//{
+//	int leng = 0;
+//	while (str[leng] != '\0')
+//	{
+//		leng++;
+//	}
+//	return leng;
+//
+//}
+//
+//int main()
+//{
+//	char str[22] = { '\0' };
+//
+//	scanf("%d", &T);
+//
+//	for (int Testcase = 0; Testcase < T; Testcase++)
+//	{
+//		scanf("%d %s",&R,&str);
+//
+//		int size = len(str);
+//
+//		for (int i = 0; i < size; i++)
+//		{
+//			for (int j = 0; j < R; j++)
+//			{
+//				printf("%c", str[i]);
+//			}
+//
+//		}
+//
+//		printf("\n");
+//	}
+//
+//}
+
+
+
+//
+////1316번 
+//#include <stdio.h>
+//
+//
+//int T;
+//char str[102];
+//
+//
+//
+//
+//int main()
+//{
+//	scanf("%d", &T);
+//	int count = 0;
+//	for (int i = 0; i < T; i++)
+//	{
+//		int visit[27];
+//
+//		for (int l = 0; l < 27; l++)
+//		{
+//			visit[l] = 0;
+//		}
+//
+//		scanf("%s", &str);
+//		
+//		for (int i = 0; 1; i++)
+//		{
+//			while (str[i + 1] == str[i])
+//				i++;
+//			
+//			if (visit[str[i] - 97] == 0)
+//				visit[str[i] - 97] = 1;
+//			else {
+//				count--;
+//				break;
+//			}
+//		}
+//		
+//		count++;
+//
+//	}
+//
+//	printf("%d", count);
+//}
+
+
+
+//
+//// 2908번 
+//#include <stdio.h>
+//
+//int a, b;
+//int main()
+//{
+//	
+//	scanf("%d %d",&a,&b);
+//
+//	int d1 = a % 10 * 100 + ((a / 10) % 10 * 10) + (a / 100);
+//	int d2 = b % 10 * 100 + ((b / 10) % 10 * 10) + (b / 100);
+//	
+//	if (d1 > d2)
+//		printf("%d", d1);
+//	else
+//		printf("%d", d2);
+//
+//}
+
+
+
+//5622번
+#include <stdio.h>
+
+char str[17];
+int main()
+{
+	scanf("%s", &str);
+	int count = 0;
+	for (int i = 0; str[i]; i++) {
+
+		if ((str[i]) >= 'S')
+		{
+			if ((str[i] ) == 'S')
+				count += 8;
+			else if (str[i] >= 'W')
+				count += 10;
+			else
+				count += 9;
+		}
+		else
+			count+=(str[i] - 65) / 3 + 3;
+
+
+	}
+
+	printf("%d", count);
+}
