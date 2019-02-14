@@ -1,7 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-using namespace std;
-
 
 //
 ////시뮬레이션 1번
@@ -241,30 +239,126 @@ using namespace std;
 
 
 
-//5622번
-#include <stdio.h>
+////5622번
+//#include <stdio.h>
+//
+//char str[17];
+//int main()
+//{
+//	scanf("%s", &str);
+//	int count = 0;
+//	for (int i = 0; str[i]; i++) {
+//
+//		if ((str[i]) >= 'S')
+//		{
+//			if ((str[i] ) == 'S')
+//				count += 8;
+//			else if (str[i] >= 'W')
+//				count += 10;
+//			else
+//				count += 9;
+//		}
+//		else
+//			count+=(str[i] - 65) / 3 + 3;
+//
+//
+//	}
+//
+//	printf("%d", count);
+//}
 
-char str[17];
+
+//
+//////5622번
+//#include <stdio.h>
+//int main()
+//{
+//	int dial[26] = { 3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,8,9,9,9,10,10,10,10 };
+//	char str[16];
+//	int count = 0;
+//	scanf("%s", &str);
+//
+//	for (int i = 0; str[i]; i++)
+//	{
+//		count += dial[str[i] - 65];
+//	}
+//
+//	printf("%d", count);
+//}
+
+
+
+//#include <stdio.h>
+//
+//char croa[8][4] = { {"c="},{"c-"}, {"dz="} ,{"d-"} ,{"lj"} ,{"nj"} ,{"s="} ,{"z="} };
+//
+//
+//int main()
+//{
+//	char str[101];
+//	int count = 0;
+//	scanf("%s", &str);
+//
+//	for (int i = 0; str[i]; i++)
+//	{
+//		
+//		for (int j = 0; j < 8; j++) 
+//		{
+//			if (str[i] == croa[j][0]) {
+//				if (str[i + 1] == croa[j][1])
+//				{
+//					if (str[i] == 'd' && str[i + 1] == 'z')
+//					{
+//						if (str[i + 2] == '=') {
+//							i += 2;
+//							count++;
+//							break;
+//						}
+//						else
+//							continue;
+//					}
+//					else
+//					{
+//						i += 1;
+//						count++;
+//						break;
+//					}
+//
+//				}
+//
+//			}
+//			if (j == 7)	//일반 문자일때
+//				count++;
+//
+//		}
+//
+//
+//
+//	}
+//		
+//	printf("%d",count);
+//
+//}
+
+
+#include <stdio.h>
+#include <string.h>
 int main()
 {
-	scanf("%s", &str);
-	int count = 0;
-	for (int i = 0; str[i]; i++) {
+	char str[105];
+	scanf("%s", str);
+	int len = strlen(str);
+	int cnt = 0;
 
-		if ((str[i]) >= 'S')
-		{
-			if ((str[i] ) == 'S')
-				count += 8;
-			else if (str[i] >= 'W')
-				count += 10;
-			else
-				count += 9;
-		}
-		else
-			count+=(str[i] - 65) / 3 + 3;
-
-
+	for (int i = 0; i < len; i++)
+	{
+		if (str[i] == 'd'&&str[i + 1] == 'z'&&str[i + 2] == '=') cnt++, i += 2;
+		else if (str[i] == '=' || str[i] == '-');
+		else if (str[i] == 'l'&&str[i + 1] == 'j') cnt++, i++;
+		else if (str[i] == 'n'&&str[i + 1] == 'j') cnt++, i++;
+		else cnt++;
 	}
 
-	printf("%d", count);
+	printf("%d", cnt);
+	return 0;
 }
