@@ -341,24 +341,52 @@
 //}
 
 
+
+
+//// 리틀엔디안 빅엔디안 확인
+//#include <stdio.h>
+//
+//int main()
+//{
+//	int n = 0x00111111;
+//	char *c =(char *)&n;       // "4비트(16진수)*8개 = 32비트 운영체제"  에서 앞에 8비트씩 읽기위해 char형식의 포인터 선언.
+//
+//	if (c[0])  // 가장 작은 값인 11을 읽으면 리틀엔디언 방식을 채택 (8비트)
+//		printf("리틀\n");
+//	else
+//		printf("빅\n");
+//
+//	printf("%d", sizeof(double));
+//}
+
+
+
+//구조체 사이즈
+// 구조체는 멤버 변수 중 가장 큰 데이터 배수값으로 크기 결정.
+// 1바티으형은 모든 주소지에 기록 가능
+// 2바이트형은 2byte boundary에 정렬 (4바이트의 메모리에서 2의 배수 주소로만 할당)
+// 4바이트형은 4byte boundary에 정렬 
+// 8바이트형은 윈도우에서는 8바이트, 리눅스에서는 4바이트 바운더리를 가짐.
+// 구조체 멤버들의 변수를 잘 배치하면 효율적으로 메모리를 사용할수있음
+
 #include <stdio.h>
-#include <string.h>
+
+struct data {
+	char data1;
+	short data2;
+	int data3;
+	char data4;
+};
+
+struct data2 {
+	char data1;
+	char data4;
+	short data2;
+	int data3;
+};
+
 int main()
 {
-	char str[105];
-	scanf("%s", str);
-	int len = strlen(str);
-	int cnt = 0;
-
-	for (int i = 0; i < len; i++)
-	{
-		if (str[i] == 'd'&&str[i + 1] == 'z'&&str[i + 2] == '=') cnt++, i += 2;
-		else if (str[i] == '=' || str[i] == '-');
-		else if (str[i] == 'l'&&str[i + 1] == 'j') cnt++, i++;
-		else if (str[i] == 'n'&&str[i + 1] == 'j') cnt++, i++;
-		else cnt++;
-	}
-
-	printf("%d", cnt);
-	return 0;
+	printf("%d", sizeof(data));
+	printf("%d", sizeof(data2));
 }
