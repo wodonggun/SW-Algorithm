@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+string solution(vector<string> participant, vector<string> completion) {
+	string answer = "";
+	sort(participant.begin(), participant.end());
+	sort(completion.begin(), completion.end());
+
+	for (int j = 0; j < participant.size()-1; j++)
+	{
+		string tmp1 = participant.at(j);
+		string tmp2 = completion.at(j);
+
+		if (tmp1.compare(tmp2) != 0)
+		{
+			answer = participant.at(j);
+			break;
+		}
+		
+		
+	}
+	if (answer.compare("") == 0)
+	{
+		answer = participant.back();
+	}
+	return answer;
+}
