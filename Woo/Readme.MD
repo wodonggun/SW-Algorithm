@@ -30,3 +30,27 @@ https://www.acmicpc.net/problem/1260
 
 ~~#define ABS_max(a,b) a>b?a-b:b-a~~ 음수를 뺄때 2--1은 성립이 되지 않으므로, 2-(-1)이 되어야 함.  
 #define ABS_max(a,b) a>b?(a)-(b):(b)-(a)
+
+
+
+
+# 정렬
+
+서로다른 두 집단의 문자열을 비교할때
+```
+for(int i=0;i<a.size();i++)
+  for(int j=0;j<b.size();j++)
+  {
+    strlen(a.at(i),b.at(j))           //시간복잡도 O(n^2)
+  }
+```  
+
+```
+sort(a.begin(),a.end());            //미리 정렬후에 
+sort(b.begin(),b.end());
+
+for(int i=0;i<a.size();i++)
+{
+    strlen(a.at(i),b.at(j))           //시간복잡도 O(n)   n+n+n = 3n
+}
+```  
