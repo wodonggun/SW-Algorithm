@@ -46,11 +46,11 @@ for(int i=0;i<a.size();i++)
 ```  
 
 ```
-sort(a.begin(),a.end());            //미리 정렬후에 
-sort(b.begin(),b.end());
+sort(a.begin(),a.end());            //미리 정렬후에 O(nlogn)
+sort(b.begin(),b.end());                           O(nlogn)
 
 for(int i=0;i<a.size();i++)
 {
-    strlen(a.at(i),b.at(j))           //시간복잡도 O(n)   n+n+n = 3n
+    strlen(a.at(i),b.at(j))           //시간복잡도 O(nlogn)   n+2nlogn
 }
 ```  
