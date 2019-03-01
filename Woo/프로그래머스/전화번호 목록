@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+bool solution(vector<string> phone_book) {
+	bool answer = true;
+
+	for (int i = 0; i < phone_book.size()-1; i++)
+	{
+		string t1 = phone_book.at(i);
+		for (int j = i+1; j < phone_book.size(); j++)
+		{
+			string t2 = phone_book.at(j);
+			
+			
+			int ff;
+			
+			if(t1.size()>=t2.size())
+				ff = t1.find(t2, 0);
+			else
+				ff = t2.find(t1, 0);
+
+
+			//결과 확인
+			if(ff==0)
+			{
+				answer = false;
+				return answer;
+			}
+	
+						
+
+		}
+
+	}
+	
+
+	return answer;
+}
+
+int main()
+{
+	vector<string> vec;
+
+	vec.push_back({ "12232332" });
+	vec.push_back({ "12" });
+	vec.push_back({ "222222" });
+
+
+
+
+	//vec.push_back({ "119" });
+	//vec.push_back({ "97674223" });
+	//vec.push_back({"1195524421"});
+
+
+	//vec.push_back({ "123" });
+	//vec.push_back({ "456" });
+	//vec.push_back({"789"});
+
+
+	//vec.push_back({ "12" });
+	//vec.push_back({ "123" });
+	//vec.push_back({ "1235" });
+	//vec.push_back({ "567" });
+	//vec.push_back({ "88" });
+
+
+	//vec.push_back({ "113" });
+	//vec.push_back({ "12340" });
+	//vec.push_back({ "123440" });
+	//vec.push_back({ "12345" });
+	//vec.push_back({ "98346" });
+
+
+	int answer = solution(vec);
+
+	if (answer == 0)
+		printf("false");
+	else
+		printf("true");
+	
+}
