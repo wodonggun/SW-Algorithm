@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <set>
+using namespace std;
+
+
+struct str {
+	string a;
+	int b;
+};
+
+int solution(vector<vector<string>> clothes) {
+	int answer = 1;
+
+
+	
+	
+	vector<str> vec;
+
+
+	for (int i = 0; i < clothes.size(); i++)
+	{
+		int on = 0;
+		for (int j = 0; j < vec.size(); j++)
+		{
+			string tmp = clothes.at(i).at(1);
+			//백터검사후 있으면 푸쉬
+			if (vec.at(j).a.compare(tmp)==0)
+			{
+				vec.at(j).b += 1;
+				on = 1;
+			}
+			
+		}
+		//백터검사 없으면
+		if (on != 1)
+		{
+			string pmp = clothes.at(i).at(1);
+			vec.push_back({ pmp,1 });
+		}
+
+
+	}
+	
+
+	
+	
+	if (vec.size() == 1)
+	{
+		answer = vec.at(0).b;
+		return answer;
+	}
+
+	for (int i = 0; i < vec.size(); i++)
+	{
+		int temp = vec.at(i).b+1;
+		answer *= temp;
+		
+	}
+
+
+
+	return (answer-1);
+}
+
+
+int main()
+{
+	vector<vector<string>> vec2;
+
+
+
+	vec2.push_back({ "yellow_hat","headgear" });
+
+	vec2.push_back({ "blue_sunglasses", "eyewear" });
+
+	vec2.push_back({"green_turban" , "headgear" });
+
+
+	
+
+	printf("%d", solution(vec2));
+	
+}
