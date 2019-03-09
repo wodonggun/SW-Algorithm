@@ -1,0 +1,98 @@
+
+#include <stdio.h>
+#include <vector>
+#include <string>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+struct gen {
+	string name;
+	int play;
+
+};
+
+struct p_num {
+	int play;
+	int num;
+};
+
+bool cmp(gen &a, gen& b)
+{
+	return a.play > b.play;
+
+}
+
+vector<int> solution(vector<string> genres, vector<int> plays)
+{
+
+	vector<int> answer;
+	vector<gen> vec;
+	map<string, int> att;
+	
+	
+	for (int i = 0; i < genres.size(); i++)
+	{
+		att[genres[i]] += plays[i];
+	}
+
+
+	for (auto iter = att.begin(); iter != att.end(); ++iter)
+	{
+		vec.push_back({ iter->first, iter->second });
+
+	}
+	sort(vec.begin(), vec.end(), cmp);
+
+	
+
+	for (int j = 0; j < vec.size(); j++)
+	{
+		string tmp = vec[j].name;
+
+		p_num max3 = { 0,-1 };
+		p_num max4 = { 0,-1 };
+
+		for (int i = 0; i < genres.size(); i++)
+		{
+			if (tmp.compare(genres[i]) == 0)
+			{
+				//max 결정
+				if (max3.play < plays[i])
+				{
+					max4 = max3;
+					max3.play = plays[i];
+					max3.num = i;
+				}
+				else if (max3.play == plays[i])
+				{
+					if (max4.play < plays[i])
+					{
+						max4.play = plays[i];
+						max4.num = i;
+					}
+				}
+				else if (max4.play < plays[i]) {
+
+					max4.play = plays[i];
+					max4.num = i;
+
+				}
+				else
+					;
+
+			}
+
+		}
+
+		answer.push_back(max3.num);		
+		if (max4.play>0)
+			answer.push_back(max4.num);
+	}
+
+
+
+	return answer;
+
+}
