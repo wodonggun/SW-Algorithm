@@ -1,5 +1,5 @@
 # 디버깅용 샘플 코드
-
+```
 int main()
 {
 	vector<string> genres;
@@ -58,3 +58,4 @@ int main()
 	return 0;
 
 }
+```
