@@ -8,8 +8,10 @@ map<string, int> att;    //Key , Value로 구성됨. (Key는 중복 불가능)
 	
 for (int i = 0; i < genres.size(); i++)
 {
-	att[genres[i]] += plays[i];           //map의 장르별로 재생횟수를 저장하고자할때 att["장르"]에 데이터를 넣으면서 중복검사를하고 value값을 저장.
-                                        //중복시에는 해당 장르의 value를 찾아 더하고, 해당 장르가 없으면 장르를 추가하고 value를 저장함. 
+	att[genres[i]] += plays[i];     //map의 장르별로 재생횟수를 저장하고자할때 att["장르"]에 
+					//데이터를 넣으면서 중복검사를하고 value값을 저장.
+                                        //중복시에는 해당 장르의 value를 찾아 더하고, 해당 장르가 없으면 
+					//장르를 추가하고 value를 저장함. 
 }
 
 ```
