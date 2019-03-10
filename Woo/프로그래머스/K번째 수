@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+
+vector<int> solution(vector<int> array, vector<vector<int>> commands)
+{
+    vector<int> answer;
+
+    for (int i = 0; i < commands.size(); i++)
+    {
+        vector<int> vec;
+        int i1 = commands.at(i).at(0) - 1;
+        int i2 = commands.at(i).at(1) - 1;
+        int i3 = commands.at(i).at(2) - 1;
+
+        for (int j = i1; j <=i2; j++)
+        {
+            vec.push_back(array[j]);
+        }
+        sort(vec.begin(), vec.end());
+
+        answer.push_back(vec.at(i3));
+
+
+    }
+
+
+
+    return answer;
+}
