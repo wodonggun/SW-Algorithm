@@ -1,3 +1,59 @@
+# sort 정렬
+```
+#include <stdio.h>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	vector<int> a;
+
+	a.push_back(2);
+	a.push_back(3);
+	a.push_back(5);
+	a.push_back(1);
+	a.push_back(4);
+
+
+	sort(a.begin(), a.end());		//오름 차순
+
+
+	for (auto i = a.begin(); i != a.end(); i++)
+	{
+		printf("%d ", *i);
+	}
+	printf("\n");
+
+
+ 
+
+
+	int arr[5];
+	
+	arr[0] = 10;
+	arr[1] = 5;
+	arr[2] = 6;
+	arr[3] = 1;
+	arr[4] = 11;
+
+	sort(arr, arr+5,greater<int>());	//내림 차순
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+
+
+
+	return 0;
+}
+```
+
+
+
 # map 정리
 
 - 키값이 중복하지않게 데이터를 필요로 할때  
