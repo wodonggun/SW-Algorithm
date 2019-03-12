@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <string.h>
+
+using namespace std;
+	
+bool tmp(string &a, string &b)
+{
+
+	string t1 = a + b;
+	string t2 = b + a;
+  
+	return t1 > t2;		
+}
+
+
+
+string solution(vector<int> numbers) 
+{
+	string answer = "";
+
+	vector<string> ans;
+
+	for (int i = 0; i < numbers.size(); i++)
+	{
+		int t = numbers[i];
+		ans.push_back(to_string(t));
+	}
+
+	
+	sort(ans.begin(), ans.end(),tmp);
+
+	if (ans[0].compare("0") != 0)                 //만약 0만 푸쉬했을때(정렬해서 첫숫자가 0이면 뒤에는 볼필요없음)
+		for (int i = 0; i < ans.size(); i++)
+		{
+			answer += ans[i];
+
+		}
+	else
+		answer = "0";                               //맨앞자리수가 0이면
+
+
+
+	return answer;
+}
