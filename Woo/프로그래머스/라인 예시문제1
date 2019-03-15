@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> solution(vector<vector<int> > v) {
+	vector<int> ans;
+
+
+	map<int, int> ma_x;
+	map<int, int> ma_y;
+	int t_x;
+	int t_y;
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		ma_x[v[i][0]] += 1;
+		ma_y[v[i][1]] += 1;
+	}
+	
+	for (auto iter = ma_x.begin(); iter != ma_x.end();++iter)
+	{
+		if (iter->second == 1)
+			ans.push_back(iter->first);
+	}
+
+
+	for (auto iter = ma_y.begin(); iter != ma_y.end(); ++iter)
+	{
+		if (iter->second == 1)
+			ans.push_back(iter->first);
+	}
+
+
+
+	return ans;
+}
