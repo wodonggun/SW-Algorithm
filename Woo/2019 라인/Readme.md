@@ -4,7 +4,41 @@
 
 
 ## 라인 1번
+```
+#define _CRT_SECURE_NO_WARNINGS
+#define ABS_max(a,b) a>b?(a)-(b):(b)-(a)
 
+#include <stdio.h>
+
+
+typedef long long int m_int;
+
+m_int ans = 100000000000000;
+
+int main()
+{
+	m_int a;
+	m_int N;
+
+	scanf("%lld", &N);
+	
+
+	for (m_int i= 1;i <= N; i++)
+	{
+		if (N%i == 0)
+		{
+			m_int t = ABS_max(i,N/i);
+			if (t < ans)
+				ans = t;
+		}
+	}
+
+	printf("%lld",ans);
+	
+	return 0;
+
+}
+```
 
 
 
