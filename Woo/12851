@@ -1,0 +1,94 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#include <stdio.h>
+#include <deque>
+
+using namespace std;
+
+
+
+struct str {
+	int cur, time;
+};
+
+deque<str> vec;
+int ans = -1;
+int visit[100001];
+int count2 = 0;
+
+
+int main()
+{
+	int subin, des;
+
+
+	scanf("%d %d", &subin, &des);
+
+
+	vec.push_back({ subin,0 });
+
+
+
+	while (!vec.empty())
+	{
+		str tmp = vec.front();
+		vec.pop_front();
+
+		visit[tmp.cur] = 1;
+
+
+		//결과 확인
+		if (tmp.cur == des)
+		{
+			ans = tmp.time;
+			count2 += 1;
+			break;
+		}
+
+		//범위 밖일때
+		if (tmp.cur > 100000 || tmp.cur < 0 || tmp.time > 100000)
+		{
+			continue;
+		}
+
+		// 3방향 푸쉬
+		if ( tmp.cur +1 < 100001 && visit[tmp.cur + 1] == 0  )
+		{
+			vec.push_back({ tmp.cur + 1,tmp.time + 1 });
+			
+		}
+
+
+		if ( tmp.cur-1< 100001 && tmp.cur-1>=0 && visit[tmp.cur - 1] == 0 )
+		{
+			vec.push_back({ tmp.cur - 1,tmp.time + 1 });
+		}
+
+
+		if ( tmp.cur*2 < 100001 &&  visit[tmp.cur * 2] == 0   )
+		{
+
+			vec.push_back({ tmp.cur * 2,tmp.time + 1 });
+		}
+
+
+
+	}
+
+	while (!vec.empty())
+	{
+		str tmp = vec.front();
+		vec.pop_front();
+
+		//결과 확인
+		if (tmp.cur == des && tmp.time == ans)
+		{
+			count2 += 1;
+		}
+	}
+
+	printf("%d\n", ans);
+	printf("%d\n", count2);
+
+}
