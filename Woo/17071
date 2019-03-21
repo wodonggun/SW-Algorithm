@@ -1,0 +1,126 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#include <stdio.h>
+#include <deque>
+
+using namespace std;
+
+int ans = -1;
+int visit[504001];
+
+
+int time[1001];
+
+int bro[504001];
+
+struct str {
+	int cur,time;
+};
+
+deque<str> vec;
+
+int main()
+{
+	int subin, des;
+	
+
+	scanf("%d %d", &subin, &des);
+
+	int pre = 0;
+
+	for (int i = 1; i<1001; i++)
+	{
+		time[i] = time[i - 1] + (pre + 1);
+		pre = (pre + 1);
+
+	}
+
+
+	vec.push_back({ subin,0});
+
+
+
+	while (!vec.empty())
+	{
+		str tmp = vec.front();
+		vec.pop_front();
+
+
+	/*	if (tmp.time == 998)
+			printf("sdf");*/
+
+
+		//결과 확인
+		if (tmp.cur == des + time[tmp.time] && tmp.cur <= 500000)
+		{
+			ans = tmp.time;
+			break;
+		}
+
+		//범위 밖일때
+		if (tmp.cur > 504000 || tmp.cur < 0 || tmp.time >= 1001)
+		{
+			continue;
+		}
+
+		// 3방향 푸쉬
+		if (tmp.cur + 1 < 500001 && visit[tmp.cur + 1] == 0)
+		{
+			visit[tmp.cur+1 ] = tmp.time + 1;
+			vec.push_back({ tmp.cur + 1,tmp.time + 1 });
+
+
+		}
+
+		if (tmp.cur - 1 >= 0 && visit[tmp.cur-1] == 0 )
+		{
+
+			visit[tmp.cur - 1] = tmp.time+1;
+			vec.push_back({ tmp.cur - 1,tmp.time + 1 });
+
+		}
+
+		if (tmp.cur * 2 < 500001 && visit[tmp.cur*2] == 0 )
+		{
+			visit[tmp.cur * 2] = tmp.time + 1;
+			vec.push_back({ tmp.cur * 2,tmp.time + 1 });
+		}
+	}
+
+
+
+
+	if (ans == -1 && subin > des )
+	{
+		for (int i = 1; i < 1000; i++)
+		{
+			/*if(des+time[i]<500001)
+			bro[des + time[i]] = i;*/
+			
+			if (des + time[i] < 500001 && visit[des + time[i]] != 0 && visit[des + time[i]] < i)
+			{
+				if (visit[des + time[i]] % 2 == 0)
+				{
+					if(ans==-1)
+					ans = i;
+					else
+					{
+						if (ans > i)
+							ans = i;
+					}
+				}
+			}
+
+
+		}
+
+	
+
+	}
+
+	printf("%d", ans);
+
+}
+
+
