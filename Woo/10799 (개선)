@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <vector>
+
+using namespace std;
+
+int ans;
+
+char str[100001];
+
+
+vector<char> vec;
+
+int main()
+{
+	gets(str);
+
+
+
+	for (int i = 0; str[i] != '\0'; i++)
+	{
+		if (str[i] == '(')
+		{
+			vec.push_back(str[i]);
+		}
+		else if (str[i] == ')')
+		{
+			if (str[i - 1] == '(') //레이저일때
+			{
+				vec.pop_back();
+				ans += vec.size();
+			}
+			else  //레이저 아닐때
+			{
+				vec.pop_back();
+				ans++;
+			}
+
+
+		}
+		else
+			;
+
+	}
+
+	printf("%d", ans);
+    
+    return 0;
+}
