@@ -1,0 +1,40 @@
+
+#include <stdio.h>
+#include <map>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int N;
+	map<string, int> ma;
+	scanf("%d", &N);
+	
+	for (int i = 0; i < N; i++)
+	{
+		char str[101];
+		scanf("%s", &str);
+
+		string a = str;
+		string b = str;
+
+			reverse(b.begin(), b.end());
+		
+		ma[a] += 1;
+		ma[b] += 1;
+	}
+	
+	for (auto i = ma.begin(); i != ma.end(); ++i)
+	{
+		if (i->second == 2)
+		{
+			int size = i->first.size();
+			printf("%d %c", i->first.size(), i->first[ size/2]);
+			break;
+		}
+
+	}
+
+
+}
