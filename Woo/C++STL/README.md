@@ -92,3 +92,43 @@ int main()
   
 }
 ```
+
+# string 객체 , 문자열 가지고놀기
+1. string 객체
+```
+#include <string>
+#include <stdio.h>
+
+int main()
+{
+  char str[4] = "ccc";
+  
+  string a = "abc";
+  string b = str;
+  
+  
+  
+  return 0;
+}
+
+```
+  
+2. 문자열 뒤집기
+```
+#include <string>
+#include <algorithm>
+#include <stdio.h>
+
+int main()
+{
+  
+  string a = "abc";
+  string b = "abc";
+  
+  reverse(b.begin(),b.end());
+  
+  printf("%s",b.c_str());
+  
+  return 0;
+}
+```
