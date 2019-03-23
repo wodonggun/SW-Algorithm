@@ -8,6 +8,8 @@ int ans=0;
 char str[100001];
 int vec_num = 0;
 
+//너무 복잡하게 생각함....
+
 int main()
 {
 	vector<int> vec[50001];
