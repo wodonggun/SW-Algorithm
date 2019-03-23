@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <vector>
+
+using namespace std;
+
+int ans=0;
+
+char str[100001];
+int vec_num = 0;
+
+int main()
+{
+	vector<int> vec[50001];
+	scanf("%s", &str);
+	
+
+	for (int i = 0; str[i] != '\0'; i++)
+	{
+		//레이저일때
+		if (str[i] == '(' && str[i + 1] == ')')
+		{
+			//백터 순환하면서 값 더하기
+			for (int j = 0; j <= vec_num; j++)
+			{
+				ans += vec[j].size();
+			}
+			i++;
+		}
+		else if (str[i] == '(')
+		{
+
+			if (vec[vec_num].size() == 0)
+				vec_num++;
+			vec[vec_num].push_back('(');
+		}
+		else if (str[i] == ')')    	// ) 일때 닫으면서 vector 순번+1
+		{
+			ans += 1;
+			vec[vec_num].pop_back();
+
+		}
+		else
+			printf("error");
+	
+
+	}
+	
+	printf("%d", ans);
+
+}
