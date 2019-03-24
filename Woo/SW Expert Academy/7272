@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string>
+
+using namespace std;
+int main()
+{
+	int T;
+	int Alpa[26] = { 1,2,0,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0 };
+	scanf("%d", &T);
+
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		char a[11];
+		char b[11];
+		int ans = 0;
+		scanf("%s %s", &a, &b);
+
+		string a_s = a;
+		string b_s = b;
+
+		if (a_s.size() != b_s.size())
+		{
+			ans = 1;
+		}
+		else
+			for (int i = 0; i<a_s.size(); i++)
+			{
+				if (Alpa[a_s[i] - 65] == Alpa[b_s[i] - 65])
+				{
+					continue;
+				}
+				else {
+					ans = 1;
+					break;
+				}
+			}
+
+		printf("#%d %s\n",testcase, ans == 0 ? "SAME" : "DIFF");
+	}
+	
+
+	return 0;
+}
