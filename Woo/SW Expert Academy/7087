@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <map>
+
+using namespace std;
+
+int main()
+{
+	int T;
+	scanf("%d", &T);
+
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		int N,ans = 0;
+		map<char, int> ma;
+		scanf("%d", &N);
+
+		for (int i = 0; i < N; i++)
+		{
+			char str[31];
+			scanf("%s", &str);
+
+			ma[str[0]] += 1;
+			
+		}
+
+		for (auto i = ma.begin(); i != ma.end(); ++i)
+		{
+			if ((i->first)-65 == ans)
+			{
+				ans++;
+			}
+			else
+				break;
+		}
+
+		printf("#%d %d\n", testcase, ans);
+	}
+
+}
