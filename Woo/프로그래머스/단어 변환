@@ -1,0 +1,57 @@
+#include <string>
+#include <vector>
+#include <deque>
+using namespace std;
+
+struct str
+{
+	string a;
+	int count;
+	int depth;
+};
+
+int solution(string begin, string target, vector<string> words) {
+
+	int answer = 987654321;
+	int count = 0;
+	deque<str> que;
+
+	que.push_back({ begin,0,0 });
+
+	while (!que.empty())
+	{
+		str tmp = que.front();
+		que.pop_front();
+
+
+		//결과 확인    
+		if (tmp.a.compare(target) == 0)
+		{
+			if (answer > tmp.count)
+				answer = tmp.count;
+		}
+
+		//depth 벗어난거 처리
+		if (tmp.depth >= words.size())
+		{
+			continue;
+		}
+
+		//단어 a~z 모두 변환해보기
+		for (int i = 0; i < begin.size(); i++)
+		{
+			for (int j = 0; j < begin.size(); j++)
+			{
+				string t = tmp.a;
+				t[i] = words[tmp.depth][j];
+
+				if (t.compare(words[tmp.depth]) == 0)          //변환 진행한 단어가 words안에 있을때
+					que.push_back({ t,tmp.count + 1,tmp.depth + 1 });
+			}
+		}
+		que.push_back({ tmp.a,tmp.count,tmp.depth + 1 }); //변환 안한거
+
+	}
+
+	return (answer == 987654321 ? 0 : answer);
+}
