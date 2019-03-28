@@ -1,0 +1,60 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+
+
+using namespace std;
+vector<string> ans;
+int ending =0;      //가장 빠른경로 찾으면 dfs 종료 비트
+int length;         //전체 표 갯수
+
+void dfs(string str, map<string,vector<string>> ma_tmp, vector<string> ans_tmp)
+{
+
+    //str출발점에서 목적지 갯수만큼 for문
+    for(int i=0;i<ma_tmp[str].size() && ending == 0 ;i++)
+    {
+        map<string,vector<string>> t = ma_tmp;
+        t[str].erase(t[str].begin()+i);       //해당 티켓 사용했으므로 지우기
+
+        vector<string> v = ans_tmp;           
+        v.push_back(str);                     //ans에 출발지 push
+
+        dfs(ma_tmp[str][i],t,v);
+    }
+
+    if(ans_tmp.size()==length)    //종료조건(티켓사용==전체티켓)
+    {
+        ans_tmp.push_back(str);
+        ans = ans_tmp;
+        ending=1;
+        return;
+    }
+}
+
+
+vector<string> solution(vector<vector<string>> tickets) {
+    vector<string> answer;
+    map<string,vector<string>> ma;
+
+    length = tickets.size();
+
+     //각 해당 map[출발지]에 목적지 push
+    for(int i=0;i<length;i++)
+    {
+        ma[tickets[i][0]].push_back(tickets[i][1]) ;
+    }
+    
+    //알파뱃 순으로 목적지vector 정렬
+    for(auto i = ma.begin();i!=ma.end();++i)
+    {
+        sort(i->second.begin(),i->second.end());
+    }
+
+    dfs("ICN",ma, answer);    //dfs 
+
+    answer = ans;
+    
+    return answer;
+}
