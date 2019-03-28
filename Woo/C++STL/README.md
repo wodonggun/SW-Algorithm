@@ -93,6 +93,9 @@ int main()
 }
 ```
 
+
+
+
 # string 객체 , 문자열 가지고놀기
 1. string 객체
 ```
@@ -131,4 +134,41 @@ int main()
   
   return 0;
 }
+```
+
+
+# map 특징
+
+map<string, int> hash_map;
+1. map[key값] = value값을 넣을 수 있다.  
+2. map은 key값을 기준으로 오름차순으로 정렬이 자동으로 된다.  
+```
+#include <stdio.h>
+#include <map>
+
+using namespace std;
+
+int main()
+{
+	map<string, int> ma;
+
+	ma["abc"] = 1;
+	ma["ccc"] = 2;
+	ma["zbc"] = 5;
+	ma["aaa"] = 100;
+
+	for(auto iter=ma.begin();iter!=ma.end();++iter)   //순차적으로 map 탐색
+	{
+		printf("%s %d\n",iter->first.c_str(),iter->second);  //c_str()쓰는 이유는 string객체를 c언어에서는 지원하지 않기 때문
+	}
+	return 0;
+
+}
+```
+
+3. map 맨 끝값 읽기  
+- map은 end()함수를 가지고있지만 end가 마지막 데이터가 아닌, 마지막데이터가 끝난 주소를 가리킨다
+- 그러므로 `--ma.begin()` --연산자를 통해 주소를 앞으로 이동.
+```
+printf("%d", (--ma.end())->second);
 ```
