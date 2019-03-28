@@ -1,0 +1,32 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+using namespace std;
+
+
+//가로>=세로
+
+
+vector<int> solution(int brown, int red) {
+    vector<int> answer;
+    
+   
+    for(int i=1;i<=(int)sqrt(red);i++)
+    {
+        //소수일때
+        if(red%i==0)
+        {
+            //레드의 가로 세로  (i, red/2)
+            if( (((i+1) + ((red/i)+1))*2)== brown){   //둘레 반쪽 * 2 == brown 갯수와 같으면
+                answer.push_back(i+2);
+                answer.push_back(red/i+2);
+                break;
+            }
+        }
+    }
+    
+    sort(answer.begin(),answer.end(),greater<int>()); //가로세로 순서 구분안했으므로 내림차순으로 sorting
+    
+    return answer;
+}
