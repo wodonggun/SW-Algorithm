@@ -5,7 +5,7 @@
 using namespace std;
 
 map<string, int> visit;
-int ans = 0;
+int answer = 0;
 
 int dfs(string str, vector<char> st, int select)
 {
@@ -23,7 +23,7 @@ int dfs(string str, vector<char> st, int select)
 				cnt++;
 		}
 		if (cnt == 0)
-			ans++;
+			answer++;
 	}
 	
 
@@ -50,4 +50,19 @@ int dfs(string str, vector<char> st, int select)
 
 
 	return 0;
+}
+
+
+int solution(string numbers) {
+     
+    vector<char> vec;
+    for(int i=0;i<numbers.size();i++)
+    {
+        vec.push_back(numbers[i]);
+    }
+
+    dfs("",vec,0);
+    
+
+    return answer;
 }
