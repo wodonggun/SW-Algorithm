@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+int solution(vector<int> priorities, int location) {
+    int answer = 0;
+
+    deque<pair<int,int>> wait_que;
+
+    for(int i=0;i<priorities.size();i++)
+    {
+        wait_que.push_back({i,priorities[i]});
+    }
+
+
+    while(!wait_que.empty())
+    {
+        pair<int,int> tmp = wait_que.front();
+        wait_que.pop_front();
+
+        //큰거 찾고
+        int i;
+        for(i=0;i<wait_que.size();i++)
+        {
+                if(wait_que[i].second>tmp.second)
+                    break;
+        }
+        //없으면 인쇄
+        if(i==wait_que.size())
+        {
+            if(tmp.first == location )  //종료조건 
+            {
+                    break;
+             }
+            answer++;   //인쇄 카운트
+        }
+        else   //있으면 푸쉬 백
+        {
+            wait_que.push_back(tmp);
+        }
+
+
+    }
+
+    return answer+1;
+}
