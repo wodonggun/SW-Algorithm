@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+typedef struct str{
+    int wei;
+    int time;
+}str;
+
+int solution(int bridge_length, int weight, vector<int> truck_weights) {
+    int answer = 1 ;
+    int bridge_state = 0;
+    int k = 0;
+    deque<str> deq;
+    
+   
+    
+    while(1)
+    {
+        for(int i=0;i<deq.size();i++)   //다리위 전체 트럭 건너는 시간 +1 
+            deq[i].time+=1;
+
+        
+        if(deq[0].time == bridge_length)  //다리 길이가 건너는시간과 같아지면(다리에서 트럭뺌)
+        {
+                bridge_state-=deq[0].wei;
+                deq.pop_front();
+        }
+        
+        
+        if(k<truck_weights.size() && bridge_state+truck_weights[k] <= weight)   //다리하중이 버틸수있으면
+        {
+            deq.push_back({truck_weights[k],0});
+            bridge_state+=truck_weights[k];
+            k++;
+        }
+        
+        if(deq.empty()) //더이상 지나갈 트럭이 없으면 시간경과없이 break;
+            break;
+    
+        answer++;       //경과시간++
+
+    }
+    
+    return answer;
+}
