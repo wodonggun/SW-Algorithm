@@ -1,0 +1,53 @@
+#include <string>
+#include <vector>
+#include <deque>
+#include <map>
+using namespace std;
+int visit[20001];   //방문 여부
+
+
+int solution(int n, vector<vector<int>> edge) {
+    int answer = 0;
+    int max_ans = 0;
+    deque<pair<int,int>> que;
+    map<int,vector<int>> vert;
+    
+    for(int i=0;i<edge.size();i++)  //해쉬에 각 이동경로 저장.
+    {
+        vert[edge[i][0]].push_back(edge[i][1]);
+        vert[edge[i][1]].push_back(edge[i][0]);
+    }
+
+    que.push_back(make_pair(1,1));
+    visit[1] = 1;
+
+    //bfs 스타트 
+    while(!que.empty())
+    {
+        int cur = que.front().first;
+        int depth = que.front().second; 
+        que.pop_front();
+        
+        //결과 계산
+        if(depth==max_ans)
+             answer++;
+        if(depth>max_ans)
+        {
+             max_ans = depth;
+             answer = 1;
+        }
+
+        //가능한 간선 체크
+        for(int i=0;i<vert[cur].size();i++)
+        {
+                if(visit[vert[cur][i]]==0)
+                {
+                    visit[vert[cur][i]]=1;
+                    que.push_back(make_pair(vert[cur][i],depth+1));
+                }
+        }
+    }
+ 
+    
+    return answer;
+}
