@@ -1,0 +1,71 @@
+#include <string>
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+
+int solution(int n, vector<vector<int>> results) {
+    int answer = 0;
+    vector<int> victory[102];
+    vector<int> lose[102];
+    
+    deque<pair<int,int>> que;
+    int victory_visit[101];
+    
+    for(int i=0;i<results.size();i++)
+    {
+        victory[results[i][0]].push_back(results[i][1]);
+        lose[results[i][1]].push_back(results[i][0]);   
+    }
+    
+    //순위 결정
+    for(int j=1;j<=n;j++)
+    {
+        if(victory[j].size()+lose[j].size()==n-1) //경기를 다했으면
+        {
+            
+            que.push_back(make_pair(n-victory[j].size(),j));
+            victory_visit[n-victory[j].size()]=j;
+            answer++;
+        }
+    }  
+    
+    //순위결정된사람을 보고 다시 순위결정 
+    while(!que.empty())
+    {
+        int rank = que.front().first;
+        int number = que.front().second;
+        que.pop_front();
+        
+       
+        //전체탐색 -> victory== number랑 
+        //number를 졌고, 그 아래 n번까지 랭크 돌면서 visit안한곳이 한곳이면 그자리 = 랭크
+        //number를 이겼고, 그 위에 1까지 랭크 돌면서 visit 안한곳이 한곳이면 그자리 = 랭크 
+        // number = 2, rank = 4; 
+        for(int i=0;i<victory[number].size();i++)
+        {
+           int tmp = victory[number][i];
+            int cnt = 0;
+            for(int i=rank+1;i<=n;i++)
+            {
+                if(victory_visit[i]==0)
+                { 
+                    cnt++;
+                    rank = i;
+                }
+            }
+            if(cnt==1)
+            {
+                victory_visit[rank] =1;
+                answer++;
+                que.push_back(make_pair(rank,number));
+            }
+            
+        }
+        
+        
+    }
+    
+    return answer;
+}
