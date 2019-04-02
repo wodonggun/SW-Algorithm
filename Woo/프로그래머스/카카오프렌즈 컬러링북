@@ -1,0 +1,118 @@
+#include <vector>
+#include <stdio.h>
+#include <deque>
+using namespace std;
+
+int visit[101][101];
+int dx[4] = {0,1,0,-1};
+int dy[4] = {-1,0,1,0};
+
+int M_m;
+int N_n;
+int number_of_area;
+int max_size_of_one_area;
+
+vector<vector<int>> book;
+
+int boundary(int x, int y)  //경계 체크 
+{
+    return (x>=0 && y>=0 && x<N_n && y<M_m);
+}
+
+int bfs(int x_t, int y_t)   
+{
+    
+    int count = 1;              //같은 색깔 카운트
+    int color =book[y_t][x_t];  //현재 색깔
+    vector<pair<int,int>> vec;
+    deque<pair<int,int>> que;
+    
+    
+    que.push_back(make_pair(x_t,y_t));
+    
+    //bfs start
+    while(!que.empty())
+    {
+        
+        int x = que.front().first;
+        int y = que.front().second;
+        que.pop_front();
+
+        
+      
+        for(int i=0;i<4;i++)
+        {
+            int tx = x+dx[i];
+            int ty = y+dy[i];
+           //경계값 내부이며,  방문안했으며, 색깔이 0이 아니여야하고, 현재 컬러와 이동할 컬러가 같으면
+            if(boundary(tx,ty) && visit[ty][tx]==0 && book[ty][tx]!=0 && book[ty][tx]==color)
+            {
+                visit[ty][tx] =1;
+                count++;
+                que.push_back(make_pair(tx,ty));
+            }
+                //다른 컬러일때 bfs
+            if(boundary(tx,ty) && visit[ty][tx]==0 && book[ty][tx]!=0 && book[ty][tx]!=color)
+             {
+                 vec.push_back(make_pair(tx,ty));   //나중에 bfs할 큐에 넣기.
+             }
+        }
+        
+    }
+    //bfs 끝나고 최대값 체크
+    if(count>=max_size_of_one_area)
+        max_size_of_one_area = count;
+    
+    //다른 컬러 큐에 들어간 좌표 bfs 가능성 체크
+    while(!vec.empty())
+    {  
+        int x = vec.back().first;
+        int y =  vec.back().second;
+         vec.pop_back();
+        
+        if(visit[y][x]==0) //방문 안했다면
+        {
+                 visit[y][x]=1;
+                 number_of_area++;
+                 bfs(x,y);
+        }
+    }
+        
+    
+    
+    return 0;
+}
+
+vector<int> solution(int m, int n, vector<vector<int>> picture) {
+    M_m=0;
+    N_n=0;
+    number_of_area=0;
+    max_size_of_one_area=0;
+    for(int i=0;i<101;i++)
+        for(int j=0;j<101;j++)
+            visit[i][j] =0;
+    
+    book = picture; //벡터 복사(전역 변수로)
+    M_m = m;  //세로(전역 변수로)
+    N_n = n;  //가로(전역 변수로)
+
+    //전체 순회하면서 탐색할 위치 찾음.
+    for(int i=0;i<m;i++)
+    {   
+        for(int j=0;j<n;j++)
+        {
+             if(book[i][j]!=0 && visit[i][j]==0 )   //컬러이면서 방문을 하지않았을때
+             {
+                 visit[i][j]=1;
+                 number_of_area++;                  //새로운 영역 카운트
+                 bfs(j,i);                          //bfs 진행할 x,y좌표
+             }
+        }
+    }
+    
+    //결과
+    vector<int> answer(2);
+    answer[0] = number_of_area;
+    answer[1] = max_size_of_one_area;
+    return answer;
+}
