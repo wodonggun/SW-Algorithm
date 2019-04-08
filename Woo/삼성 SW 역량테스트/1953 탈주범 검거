@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <deque>
+using namespace std;
+
+//파이프 모양 구현
+int pipe[9][4] =
+{
+	{0,0,0,0},
+	{1,1,1,1},
+	{1,0,1,0},
+	{0,1,0,1},
+	{1,1,0,0},
+	{0,1,1,0},
+	{0,0,1,1},
+	{1,0,0,1}
+};
+
+//4방향 탐색 방법
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+int N, M;
+
+int arr[51][51];
+int visit[51][51];
+
+void init()
+{
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+		{
+			arr[i][j] = 0;
+			visit[i][j] = 0;
+		}
+}
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < M && y < N);
+}
+
+struct str {
+	int x, y, len;
+};
+
+int main()
+{
+	int T;
+	scanf("%d", &T);
+
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		int R, C, L,answer=0;
+		deque<str> vec;
+		scanf("%d %d %d %d %d", &N, &M, &R, &C, &L);
+
+		//초기화
+		init();
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < M; j++)
+				scanf("%d", &arr[i][j]);
+
+		//처음 시작자리 푸쉬
+		if (arr[R][C]!= 0 && visit[R][C] == 0)
+		{
+			visit[R][C] = 1;
+			answer++;
+			vec.push_back({ C, R, 1 });
+		}
+
+
+		//BFS 탐색 
+		while (!vec.empty())
+		{
+			str t = vec.front();
+			vec.pop_front();
+			
+			//시간 초과시 패스
+			if (t.len >= L)
+			{
+				continue;
+			}
+
+			//4방향 탐색
+			for (int i = 0; i < 4; i++)
+			{
+				int tx = t.x + dx[i];
+				int ty = t.y + dy[i];
+
+				// ( 경계 내부값이며 && 현재좌표의 파이프가 1이고 && 다음좌표를 방문한적이 없고 && 다음좌표의 파이프와 연결되어있으면 )
+				if (boundary(tx,ty) && pipe[arr[t.y][t.x]][i] == 1 &&  visit[ty][tx] == 0 && pipe[arr[ty][tx]][(i + 2) % 4] == 1)
+				{
+					visit[ty][tx] = 1;
+					vec.push_back({ tx,ty,t.len + 1 });
+					answer++;
+				}
+
+			}
+		}
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+
+	return 0;
+
+}
