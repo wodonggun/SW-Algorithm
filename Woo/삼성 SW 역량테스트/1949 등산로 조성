@@ -1,0 +1,108 @@
+#include <stdio.h>
+
+int visit[9][9];
+int arr[9][9];
+int T, N, K, answer, max_m;
+
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+int dfs(int x, int y, int length, int k_k)
+{
+	//4방향 탐색
+
+	for (int k = 0; k < 4; k++)
+	{
+		int tx = x + dx[k];
+		int ty = y + dy[k];
+		if (boundary(tx, ty) && visit[ty][tx] == 0)
+		{
+			if (arr[ty][tx] < arr[y][x])
+			{
+				visit[ty][tx] = 1;
+				dfs(tx, ty, length + 1, k_k);
+				visit[ty][tx] = 0;
+			}
+			else 
+			{
+				for (int k_c = 1; k_c <= k_k; k_c++)
+				{
+					if (boundary(tx, ty) && visit[ty][tx] == 0 && arr[ty][tx] - k_c < arr[y][x])
+					{
+						visit[ty][tx] = 1;
+						arr[ty][tx] -= k_c;
+						dfs(tx, ty, length + 1, 0);
+						arr[ty][tx] += k_c;
+						visit[ty][tx] = 0;
+					}
+				}
+
+			}
+
+		}
+
+	}
+	
+	if (answer < length)
+	{
+		answer = length;
+	}
+
+
+	return 0;
+}
+
+
+int main()
+{
+
+	scanf("%d", &T);
+	
+
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+
+		scanf("%d %d", &N, &K);
+		//초기화
+		answer = 0;
+		max_m = 0;
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				visit[i][j] = 0;
+
+
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++) {
+				scanf("%d", &arr[i][j]);
+				
+				if (arr[i][j] > max_m)
+					max_m = arr[i][j];
+			}
+
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+			{
+				if (arr[i][j] == max_m)
+				{
+					visit[i][j] = 1;
+					dfs(j,i,1,K);
+					visit[i][j] = 0;
+				}
+
+			}
+
+
+
+
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+
+}
