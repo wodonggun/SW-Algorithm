@@ -1,0 +1,171 @@
+#include <stdio.h>
+#include <deque>
+
+using namespace std;
+
+int N;
+
+struct str {
+	int x, y, depth;
+};
+
+//상어 현재 좌료
+int sang_x;
+int sang_y;
+
+//물고기 먹이 좌표(상어 이동할 좌표)
+int des_x;
+int des_y;
+int des_depth;	//상어 이동 거리
+
+//상어 레벨,경험치
+int sang_exp;
+int sang_level = 2;
+
+
+//4방향 탐색 배열
+int dx[4] = { 0,-1,1,0 };
+int dy[4] = { -1,0,0,1 };
+
+int arr[22][22];
+
+//경계값 여부
+int boundary(int x, int y)
+{
+	return (x >= 0 && y >= 0 && x < N && y < N);
+}
+
+
+
+int find(str s)
+{
+	int visit[21][21];
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			visit[i][j] = 0;
+
+	deque<str> deq;
+	visit[s.y][s.x] = 1;
+	deq.push_back(s);
+
+	//먹을 물고기 찾음 여부
+	int finish = 0;
+	
+
+	// bfs 시작
+	while (!deq.empty())
+	{
+		str t = deq.front();
+		deq.pop_front();
+		
+
+		if (finish == 1 && des_depth != t.depth)		//먹을 물고기를 찾았을때 && 깊이가 같지 않으면 (백트래킹=더이상 bfs해도 최단 거리가 아님)
+			return 1;
+
+		// 빈 공간이 아니고 &&  자기자신(상어)가 아니고 &&  상어레벨보다 낮으면 
+		if (arr[t.y][t.x] != 0 && arr[t.y][t.x] !=9 && arr[t.y][t.x] < sang_level)
+		{
+			if (finish == 0)	//처음 먹을 물고기가 나타나면
+			{
+				des_x = t.x;
+				des_y = t.y;
+				des_depth = t.depth;
+				finish = 1;
+			}
+			else  //다른 물고기가 또 있으면
+			{
+				if (des_y > t.y)	//위에 있는 물고기면
+				{
+					des_x = t.x;
+					des_y = t.y;
+					des_depth = t.depth;
+
+				}
+				else if (des_y == t.y && des_x > t.x)	//좌측에 있는 물고기면
+				{
+					des_x = t.x;
+					des_y = t.y;
+					des_depth = t.depth;
+				}
+			}
+
+		}
+		
+		
+
+		//4방향 물고기 이동 가능한곳 찾기
+		for (int i = 0; i < 4; i++)
+		{
+			int tx = t.x + dx[i];
+			int ty = t.y + dy[i];
+
+			// 경계 내부이며 && 방문한적이 없고 && 지나갈 수 있는 물고기이면
+			if (boundary(tx, ty) && visit[ty][tx] == 0 && sang_level >= arr[ty][tx])
+			{
+				visit[ty][tx] = 1;
+				deq.push_back({ tx,ty,t.depth + 1 });
+			}
+
+		}
+
+	}
+	
+	
+	return finish;
+}
+
+
+int main()
+{
+	int answer = 0;
+	scanf("%d", &N);
+
+	for (int i = 0; i < N; i++) 
+	{
+		for (int j = 0; j < N; j++)
+		{
+			scanf("%d", &arr[i][j]);
+			if (arr[i][j] == 9)			//상어 좌표이면 저장
+			{
+				sang_x = j;
+				sang_y = i;
+			}
+		}
+	}
+
+	
+	
+	
+	while ( find({ sang_x, sang_y,0 }) == 1 )  //먹을 물고기 찾으면
+	{
+		//이동 시간 더함
+		answer += des_depth;
+
+		//경험치 +1
+		sang_exp += 1;
+
+		//상어가 경험치 풀이면
+		if (sang_exp == sang_level)
+		{
+			sang_exp = 0;		//경험치 초기화
+			sang_level += 1;	//레벨업
+		}
+		
+		//이전 상어위치는 0으로 초기화
+		arr[sang_y][sang_x] = 0;
+
+		//상어 좌표 이동
+		sang_x = des_x;
+		sang_y = des_y;
+		
+		//상어 이동한 자리 9로 표시
+		arr[des_y][des_x] = 9;
+	}
+	
+			
+	printf("%d\n", answer);
+	
+
+	return 0;
+}
+
