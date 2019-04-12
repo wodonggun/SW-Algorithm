@@ -362,6 +362,8 @@ test place
 
 ## 라인 4번
 
+- 비슷한 문제 : [SW Expert Academy 1206번](https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV134DPqAA8CFAYh&categoryId=AV134DPqAA8CFAYh&categoryType=CODE)
+
 ```
 #include <stdio.h>
 
