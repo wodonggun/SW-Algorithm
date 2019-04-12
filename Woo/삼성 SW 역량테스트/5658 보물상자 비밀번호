@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <map>
+#include <deque>
+#include <string>
+using namespace std;
+
+int main()
+{
+	int T,answer;
+
+	scanf("%d", &T);
+
+	for (int testcase = 1; testcase <= T; testcase++)
+	{
+		deque<char> deq;
+		map<string, int> ma;
+		int N, K;
+		answer = 0;
+
+
+		scanf("%d %d", &N,&K);
+
+		
+
+		for (int i = 0; i < N; i++)
+		{
+			char tmp;
+			scanf(" %c", &tmp);
+			deq.push_back(tmp);
+		}
+			
+		int length = N / 4;
+		
+
+		//톱니 전체 회전수
+		for (int k = 0; k < length; k++)
+		{
+		
+			string a = "";
+			for (int i = 0; i < deq.size(); i++)	//전체 톱니 돌면서 각 변의 문자 저장
+			{
+				a += deq[i];
+
+				if (i!=0 && i%length == length-1)	//한 변이 끝나면
+				{
+					ma[a]++;
+					a = "";
+				}
+
+			}
+
+			//회전
+			char tmp = deq.back();
+			deq.pop_back();
+			deq.push_front(tmp);
+		}
+
+		//K번째 비밀번호 찾기(map은 오름차순으로 자동정렬이라 역으로)
+		int target = ma.size() - K;
+		string tar;
+
+		int count = 0;
+		for (auto iter = ma.begin(); iter != ma.end(); ++iter)
+		{
+			if (count == target)
+				tar = iter->first;
+
+			count++;
+		}
+		
+
+	
+
+		//16진수 int형으로 변환
+		int dec = 0;
+		for (int i = tar.size()-1; i>=0 ; --i)
+		{
+			if(tar[i]<=57)		//숫자일때
+				answer = answer +  (tar[i] - '0')*pow(16,dec);
+			else		//알파벳일때 
+				answer = answer + (tar[i] - 55)*pow(16, dec);
+			dec++;
+		}
+
+		printf("#%d %d\n", testcase, answer);
+	}
+
+
+	return 0;
+}
