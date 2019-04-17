@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+#include <deque>
+
+using namespace std;
+
+int visit[201];
+
+int solution(int n, vector<vector<int>> computers) 
+{
+	
+	int answer = 0;
+
+	//모든 컴퓨터 탐색
+	for (int i = 0; i < n; i++)
+	{
+		deque<int> deq;
+		if (visit[i] == 0)	//방문한 적없으면 일단 네트워크(컴퓨터 한대)
+		{
+			visit[i] = 1;
+			answer++;
+			deq.push_back(i);
+
+			//해당 컴퓨터에서 bfs
+			while (!deq.empty())
+			{
+				int t = deq.front();
+				deq.pop_front();
+
+				//주변에 연결된 컴퓨터 있는지 탐색
+				for (int j = 0; j < computers[t].size(); j++)
+				{
+					if (computers[t][j] == 1 && visit[j] == 0)	//연결되어 있으면서 && 방문한적 없으면
+					{
+						visit[j] = 1;
+						deq.push_back(j);
+					}
+
+				}
+
+			}
+
+		}
+
+
+	}
+		return answer;
+}
