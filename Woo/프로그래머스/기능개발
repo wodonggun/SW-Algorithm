@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+
+
+using namespace std;
+
+int complete[101];
+int release[101];
+
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
+	vector<int> answer;
+
+	int total_release = 0;
+
+
+	
+	while (total_release != progresses.size())  //전체 배포 끝날때까지 반복
+	{
+		int t = 0;
+
+		for (int i = 0; i < progresses.size() ; i++)
+		{
+			if (complete[i] == 0)	//모듈이 완료되지 않으면
+			{
+				progresses[i] += speeds[i];
+
+				if (progresses[i] >= 100)	//모듈 완료 여부 확인
+					complete[i] = 1;
+			}
+
+			//배포 가능 여부 판단
+			if (complete[i] == 1 && release[i]==0 &&  (i == 0 || release[i - 1] == 1 ))
+			{
+				release[i] = 1;
+				t++;
+				total_release++;
+			}
+		}
+		
+		//배포된 갯수 push
+		if (t != 0)
+			answer.push_back(t);
+
+	}
+
+	return answer;
+}
