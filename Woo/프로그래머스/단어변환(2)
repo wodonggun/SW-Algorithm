@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+#include <deque>
+#include <map>
+
+using namespace std;
+
+//문자열 변경 가능여부 판단 함수
+int compare_str(string a, string b)
+{
+	int ans = 0;
+	//알파벳 다른 갯수
+	for (int i = 0; i < a.size(); i++)
+	{
+		if (a[i] != b[i])
+		{
+			ans++;
+		}
+	}
+
+	return ((ans <= 1) ? 1 : 0);
+}
+
+int solution(string begin, string target, vector<string> words) 
+{
+	int answer = 0;
+	deque<pair<string,int>> que;
+	map<string, int> vi;
+
+	que.push_back(make_pair(begin,0));
+
+	//bfs
+	while (!que.empty())
+	{
+		string tmp = que.front().first;
+		int t = que.front().second;
+
+		que.pop_front();
+
+		//target 종료 조건
+		if (tmp.compare(target) == 0)
+		{
+			answer = t;
+		}
+
+		//전체 words 탐색
+		for (int i = 0; i < words.size(); i++)
+		{	
+			if (compare_str(tmp, words[i]) == 1 && vi.find(words[i])== vi.end())   //문자열 변경 가능하고 && 해당 문자열 방문한적 없으면
+			{
+				vi[words[i]] = 1;
+				que.push_back(make_pair(words[i],t+1));
+			}
+		}
+	}
+	
+	return answer;
+}
