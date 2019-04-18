@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+//수신탑 정보
+int visit[10001];
+
+vector<int> solution(vector<int> heights) {
+	vector<int> answer;
+
+	//맨 오른쪽 탑부터 송신 시작
+	for (int i = heights.size()-1 ; i >0 ; i--)
+	{
+		
+		
+		//송신탑부터 왼쪽으로 수신가능한 탑 탐색
+		for (int j = i-1; j >= 0; j--)
+		{
+			if (heights[i] < heights[j])	//수신 가능하면 정보 저장 후 break;
+			{
+				visit[i] = j+ 1;
+				break;
+			}
+		}
+	}
+
+	//결과 출력
+	for (int i = 0; i < heights.size(); i++)
+	{
+		answer.push_back(visit[i]);
+	}
+
+	return answer;
+}
