@@ -7,35 +7,35 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 
 
 ## 사전 준비
-1. [SW Expert Academy 홈페이지 ](https://www.swexpertacademy.com/main/main.do)
-2. [백준 홈페이 ](https://www.acmicpc.net)
+1. [SW Expert Academy 홈페이지](https://www.swexpertacademy.com/main/main.do)
+2. [백준 홈페이지](https://www.acmicpc.net)
 3. [알고스팟 홈페이지](https://algospot.com)
 4. [LeetCode 홈페이지](https://leetcode.com)
 
 ## Visual Studio 2017 권장
 1. C
 2. C++
-3. 
+3. C#
 
-## 패키지 생성 가이드
+## 폴더 생성 가이드
 1. `src/main/java` 패키지 밑에 알고리즘 사이트별 패키지를 작성합니다.
-    - ex) Baekjoon Online Judge : `src/main/java/baekjoon`
+    - ex) Baekjoon Online Judge : `github.com/아이디/SW-Algorithm/{Woo}/`
 2. 각 사이트별 패키지 밑에 `/{본인 이름}/{단계별 제목}/{p_문제번호}` 형식으로 문제별 패키지를 생성합니다.
-    - ex) `github.com/아이디/BOJ/Woo/`
+    - ex) `github.com/아이디/SW-Algorithm/{Woo}/`
     
 
 # Commit 메시지 규칙
 
 1. 커밋 메시지는 검색의 편의를 위해 알고리즘 사이트명과 문제 번호(ID)가 포함되도록 작성합니다.
-    - ex) `[baekjoon] 2750 사다리 타기`
+    - ex) `[Baekjoon] 2750 사다리 타기`
     - ex) `[SW Expert Academy] 2880 탈주범`
 
 
 # 참가자
 1. 우동근 2015039035 
 2. 박정현 2015039034 
-3. 안재광 
-4. 염유진 
+3. 안재광 2014039013
+4. 염유진 2013039001
 5. 권희주 ...?
 
 
