@@ -7,13 +7,14 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 
 
 ## 사전 준비
-1. 
-2. 
-3. 
+1. [SW Expert Academy 홈페이지 ](https://www.swexpertacademy.com/main/main.do)
+2. [백준 홈페이 ](https://www.acmicpc.net)
+3. [알고스팟 홈페이지](https://algospot.com)
+4. [LeetCode 홈페이지](https://leetcode.com)
 
 ## Visual Studio 2017 권장
-1. 
-2. 
+1. C
+2. C++
 3. 
 
 ## 패키지 생성 가이드
@@ -52,13 +53,11 @@ C/C++ 언어로 알고리즘 문제를 풀고 서로의 코드를 공유합니�
 
 https://kks227.blog.me/   라이님 블로그
 
-
 https://www.swexpertacademy.com/main/learn/course/courseList.do?#none - SW Expert Academy 무료 강의
-
 
 https://blog.naver.com/PostList.nhn?blogId=proability&parentCategoryNo=1 - 부지런돈부리
 
-
+https://www.youtube.com/channel/UCWMAh9cSkEn8v42YRO90BHA - 엔지니어 대한민국 유튜버 (추천)
 
 
 
@@ -146,3 +145,31 @@ int sol(int cur, int select) 		// 전체 N개 중에서 M개 선택(cur=현재 �
 - scanf("%[\n]\n",s);   띄어쓰기나 줄바꿈 단위로 인식
 - getline(cin, s);      줄바꿈은 인식안하고 이전까지 인식
 ```
+
+## 시간 복잡도 계산
+
+1. 프로그램 동작 속도 요소
+- CPU 클럭 속도
+- 클럭당 명령어 수
+- 메모리 접근 방식
+- 운영체제
+- 컴파일러 버전
+- etc....  
+ 
+하지만 `시간복잡도`와 `입력 크기`만 알고 있으면 대략적으로 얼마나 걸릴지 짐작이 가능하다.  
+
+- O(1)
+- O(N)
+- O(NlogN)
+- O(N^2)
+- O(N^3)
+
+log10 = 3
+log100 = 6
+log1000 = 9
+log10000 = 13
+log100000 = 17
+log1000000 = 20 
+(혹시나 해서...밑이 2인 로그입니다)
+
+http://book.algospot.com/estimation.html
