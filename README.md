@@ -144,9 +144,12 @@ int sol(int cur, int select) 		// 전체 N개 중에서 M개 선택(cur=현재 �
 - fgets(s,100,stdin);   줄바꿈까지 인식
 - scanf("%[\n]\n",s);   띄어쓰기나 줄바꿈 단위로 인식
 - getline(cin, s);      줄바꿈은 인식안하고 이전까지 인식
-```
+
 
 ## 시간 복잡도 계산
+
+
+- [수행 시간 알고스팟 ](http://book.algospot.com/estimation.html)
 
 1. 프로그램 동작 속도 요소
 - CPU 클럭 속도
@@ -171,5 +174,3 @@ log10000 = 13
 log100000 = 17
 log1000000 = 20 
 (혹시나 해서...밑이 2인 로그입니다)
-
-http://book.algospot.com/estimation.html
