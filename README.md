@@ -149,7 +149,7 @@ int sol(int cur, int select) 		// 전체 N개 중에서 M개 선택(cur=현재 �
 ## 시간 복잡도 계산
 
 
-- [수행 시간 알고스팟 ](http://book.algospot.com/estimation.html)
+[수행 시간 알고스팟 ](http://book.algospot.com/estimation.html)
 
 1. 프로그램 동작 속도 요소
 - CPU 클럭 속도
@@ -167,10 +167,10 @@ int sol(int cur, int select) 		// 전체 N개 중에서 M개 선택(cur=현재 �
 - O(N^2)
 - O(N^3)
 
-log10 = 3
-log100 = 6
-log1000 = 9
-log10000 = 13
-log100000 = 17
-log1000000 = 20 
-(혹시나 해서...밑이 2인 로그입니다)
+log10 = 3  
+log100 = 6  
+log1000 = 9  
+log10000 = 13  
+log100000 = 17  
+log1000000 = 20   
+(혹시나 해서...밑이 2인 로그입니다)  
