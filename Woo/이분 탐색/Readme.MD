@@ -1,5 +1,12 @@
 # 이분 탐색 정리
 
+
+# 사냥꾼
+
+https://www.acmicpc.net/problem/8983
+
+
+
 [백준 2512번 예산](https://www.acmicpc.net/problem/2512)  
 
 
