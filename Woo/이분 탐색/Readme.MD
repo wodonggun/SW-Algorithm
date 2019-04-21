@@ -4,7 +4,7 @@
 # 사냥꾼
 
 https://www.acmicpc.net/problem/8983
-
+https://www.youtube.com/watch?v=klA3JxubTqo
 
 
 [백준 2512번 예산](https://www.acmicpc.net/problem/2512)  
