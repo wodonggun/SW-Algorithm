@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <math.h>
+
+using namespace std;
+
+int visit[1000001];
+
+//n의 배수를 max_n까지 걸러내기.
+int era_chae(int n,int max_n)
+{
+	for (int i = 1; i*n <= max_n; i++)
+	{
+		visit[i*n] = -1;
+	}
+
+	return 0;
+
+}
+
+int solution(int n) {
+	int answer = 0;
+
+
+	//2는 소수이므로 편의를 위해 미리 연산
+	answer += 1;
+	era_chae(2,n);
+
+	//최대 루트값의 배수는 
+	for (int i = 3; i < sqrt(n); i++)
+	{
+		//방문한적 없으면 
+		if (visit[i] == 0)
+		{
+			visit[i] = -1; //방문 체크
+
+			int sosu_check = 1;
+			for (int j = 2; j < i; j++)		//1과 자기자신을 빼고 나눠지지않는다 -> 2부터 ~ (자기자신-1)까지 나눠지지않으면 소수이다.
+			{
+				if (i%j == 0) {			 //나눠지면==소수가 아니다.
+					sosu_check = 0;
+					break;
+				}
+			}
+
+
+			if (sosu_check == 0)		//소수가 아니면 
+			{
+				era_chae(i, n);
+				continue;
+			}
+			else {						//소수이면 
+				era_chae(i, n);	
+				answer++;
+			}
+			
+		}
+		else
+			continue;
+		
+	}
+
+	//방문하지않은 곳 == 소수
+	for (int i = 3; i <= n; i++)
+	{
+		if (visit[i] == 0)
+			answer += 1;
+	}
+
+	return answer;
+}
